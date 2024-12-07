@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  database:
+    build: database
+    environment:
+      POSTGRES_DB: handson
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user123
+    ports:
+      - published: 5432
+        target: 5432
