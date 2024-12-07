@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/** @deprecated Replace with jOOQ */
+@Deprecated
 public interface LibraryRepository extends JpaRepository<LibraryEntity, String> {
 
     List<LibraryEntity> findByAddress_postalCodeStartingWith(String departmentId);
