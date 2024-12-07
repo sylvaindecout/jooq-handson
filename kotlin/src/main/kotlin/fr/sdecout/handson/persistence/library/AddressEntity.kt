@@ -3,6 +3,7 @@ package fr.sdecout.handson.persistence.library
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
+@Deprecated("Replace with jOOQ")
 @Embeddable
 data class AddressEntity(
     @Column(name = "ADDRESS_LINE_1", nullable = false) val line1: String,
