@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-libraries
+      author: SDC
+      changes:
+        - createTable:
+            tableName: LIBRARY
+            columns:
+              - column:
+                  name: ID
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ADDRESS_LINE_1
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ADDRESS_LINE_2
+                  type: VARCHAR(200)
+              - column:
+                  name: POSTAL_CODE
+                  type: VARCHAR(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CITY
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: LIBRARY_BOOK
+            columns:
+              - column:
+                  name: LIBRARY
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: FK_LIBRARY_BOOK_LIBRARY
+                    references: LIBRARY(ID)
+              - column:
+                  name: BOOK
+                  type: VARCHAR(13)
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: FK_LIBRARY_BOOK_BOOK
+                    references: BOOK(ISBN)
