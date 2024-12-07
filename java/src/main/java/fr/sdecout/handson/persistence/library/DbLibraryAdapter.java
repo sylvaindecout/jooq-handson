@@ -23,6 +23,24 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
         this.bookRepository = bookRepository;
     }
 
+    /**
+     * <h1>TODO: Step 1</h1>
+     * <p>Let's start with some basic commands.</p>
+     * <p>
+     * The goal is to replace JPA with jOOQ.
+     * You should run the tests before and after any change to check for regressions.
+     * </p>
+     * <p><i>
+     * jOOQ has already been integrated (see <code>:heavy_plus_sign: Integrate jOOQ</code> commit).
+     * In order to use it, you need to inject <code>DSLContext</code>.
+     * </i></p>
+     * <p><i>
+     * Do not forget to build, so that code modelling your DB schema is generated.
+     * It could be implemented and maintained manually, but this is not something you want.
+     * </i></p>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/insert-statement/">The INSERT statement</a>
+     */
     @Override
     public LibraryId addLibrary(String name, AddressField address) {
         var libraryId = LibraryId.next();
@@ -34,6 +52,11 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
         return libraryId;
     }
 
+    /**
+     * <h1>TODO: Step 1</h1>
+     *
+     * @see #addLibrary
+     */
     @Override
     public void addBook(LibraryId libraryId, Isbn isbn) {
         var library = libraryRepository.getReferenceById(libraryId.value());
@@ -42,24 +65,50 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
         libraryRepository.save(library);
     }
 
+    /**
+     * <h1>TODO: Step 2</h1>
+     * <p>Let's continue with some basic queries.</p>
+     * <p>Run the tests and check the console to see how jOOQ logs queries.</p>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-single-tables">SELECT from single tables</a>
+     */
     @Override
     public Optional<LibraryResponse> findLibrary(LibraryId id) {
         return libraryRepository.findById(id.value())
                 .map(LibraryEntity::toLibraryResponse);
     }
 
+    /**
+     * <h1>TODO: Step 2</h1>
+     *
+     * @see #findLibrary
+     */
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesClosestTo(PostalCode postalCode) {
         return libraryRepository.findByAddress_postalCodeStartingWith(postalCode.departmentCode()).stream()
                 .map(LibraryEntity::toLibrarySearchResponseItem);
     }
 
+    /**
+     * <h1>TODO: Step 3</h1>
+     * <p>
+     * We have seen some basic queries.
+     * But the main feature of relational databases is the relationships between tables, so let's perform some joins!
+     * </p>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-a-complex-table-expression">SELECT from a complex table expression</a>
+     */
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesWithBookAvailable(Isbn isbn) {
         return libraryRepository.findByavailableBooks_isbn(isbn.compressedValue()).stream()
                 .map(LibraryEntity::toLibrarySearchResponseItem);
     }
 
+    /**
+     * <h1>TODO: Step 3</h1>
+     *
+     * @see #searchLibrariesWithBookAvailable
+     */
     @Override
     public Long countLibrariesWithBooksBy(AuthorId author) {
         return libraryRepository.countLibrariesWithBooksBy(author.value());
