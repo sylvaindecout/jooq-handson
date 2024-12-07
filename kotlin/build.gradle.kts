@@ -1,9 +1,12 @@
+import nu.studer.gradle.jooq.JooqEdition
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+import org.jooq.meta.jaxb.Logging
+import org.jooq.meta.jaxb.Property
 
 val archunitVersion = "1.3.0"
+val jooqLiquibaseVersion = "3.19.10"
 val kotlinLoggingVersion = "7.0.0"
-val liquibaseVersion = "4.30.0"
 
 plugins {
   kotlin("jvm") version "2.1.0"
@@ -11,6 +14,7 @@ plugins {
   id("org.jetbrains.kotlin.plugin.jpa") version "2.1.0"
   id("org.springframework.boot") version "3.4.0"
   id("io.spring.dependency-management") version "1.1.6"
+  id("nu.studer.jooq") version "9.0"
 }
 
 repositories {
@@ -28,9 +32,14 @@ dependencies {
   implementation("org.springframework.boot", "spring-boot-starter-validation")
   implementation("org.springframework.boot", "spring-boot-starter-actuator")
   implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
+  implementation("org.springframework.boot", "spring-boot-starter-jooq")
+  implementation("org.jooq", "jooq-kotlin")
 
   runtimeOnly("org.postgresql", "postgresql")
-  implementation("org.liquibase", "liquibase-core", liquibaseVersion)
+  implementation("org.liquibase", "liquibase-core")
+
+  jooqGenerator("org.jooq", "jooq-meta-extensions-liquibase", jooqLiquibaseVersion)
+  jooqGenerator("org.liquibase", "liquibase-core")
 
   testImplementation("org.springframework.boot", "spring-boot-starter-test") {
     exclude("org.junit.vintage", "junit-vintage-engine")
@@ -57,4 +66,39 @@ tasks {
 
 springBoot {
   mainClass.set("fr.sdecout.handson.AppKt")
+}
+
+jooq {
+  version.set(dependencyManagement.importedProperties["jooq.version"])
+  edition.set(JooqEdition.OSS)
+
+  configurations {
+    create("main") {
+      generateSchemaSourceOnCompilation.set(true)
+
+      jooqConfiguration.apply {
+        logging = Logging.WARN
+        generator.apply {
+          name = "org.jooq.codegen.KotlinGenerator"
+          database.apply {
+            name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
+            withProperties(
+              Property().withKey("rootPath").withValue("$projectDir/src/main/resources"),
+              Property().withKey("scripts").withValue("/db/changelog/db.changelog-master.yaml"),
+              Property().withKey("includeLiquibaseTables").withValue("false")
+            )
+          }
+          generate.apply {
+            isKotlinNotNullPojoAttributes = true
+            isKotlinNotNullRecordAttributes = true
+            isKotlinNotNullInterfaceAttributes = true
+          }
+          target.apply {
+            packageName = "fr.sdecout.handson.persistence.jooq"
+            directory = "src/generated/jooq"
+          }
+        }
+      }
+    }
+  }
 }
