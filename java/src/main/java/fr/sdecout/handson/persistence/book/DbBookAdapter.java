@@ -29,12 +29,22 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
                 .map(BookEntity::toBookResponse);
     }
 
+    /**
+     * <h1>TODO: STEP 4</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/column-expressions/multiset-value-constructor/">MULTISET value constructor</a>
+     */
     @Override
     public Stream<BookSearchResponseItem> searchBooks(String hint) {
         return bookRepository.findByTitleLikeIgnoringCase('%' + hint + '%').stream()
                 .map(BookEntity::toBookSearchResponseItem);
     }
 
+    /**
+     * <h1>TODO: STEP 5</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-execution/batch-execution/">Using JDBC batch operations</a>
+     */
     @Override
     public void save(Isbn isbn, String title, Collection<AuthorId> authors) {
         var entity = BookEntity.from(

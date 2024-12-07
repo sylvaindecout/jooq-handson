@@ -23,29 +23,54 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
         this.bookRepository = bookRepository;
     }
 
+    /**
+     * <h1>TODO: STEP 2</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-single-tables">SELECT from single tables</a>
+     */
     @Override
     public Optional<LibraryResponse> findLibrary(LibraryId id) {
         return libraryRepository.findById(id.value())
                 .map(LibraryEntity::toLibraryResponse);
     }
 
+    /**
+     * <h1>TODO: STEP 2</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-single-tables">SELECT from single tables</a>
+     */
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesClosestTo(PostalCode postalCode) {
         return libraryRepository.findByAddress_postalCodeStartingWith(postalCode.departmentCode()).stream()
                 .map(LibraryEntity::toLibrarySearchResponseItem);
     }
 
+    /**
+     * <h1>TODO: STEP 3</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-a-complex-table-expression">SELECT from a complex table expression</a>
+     */
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesWithBookAvailable(Isbn isbn) {
         return libraryRepository.findByavailableBooks_isbn(isbn.compressedValue()).stream()
                 .map(LibraryEntity::toLibrarySearchResponseItem);
     }
 
+    /**
+     * <h1>TODO: STEP 3</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-a-complex-table-expression">SELECT from a complex table expression</a>
+     */
     @Override
     public Long countLibrariesWithBooksBy(AuthorId author) {
         return libraryRepository.countLibrariesWithBooksBy(author.value());
     }
 
+    /**
+     * <h1>TODO: STEP 1</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/insert-statement/">The INSERT statement</a>
+     */
     @Override
     public LibraryId addLibrary(String name, AddressField address) {
         var libraryId = LibraryId.next();
@@ -57,6 +82,11 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
         return libraryId;
     }
 
+    /**
+     * <h1>TODO: STEP 1</h1>
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/insert-statement/">The INSERT statement</a>
+     */
     @Override
     public void addBook(LibraryId libraryId, Isbn isbn) {
         var library = libraryRepository.getReferenceById(libraryId.value());

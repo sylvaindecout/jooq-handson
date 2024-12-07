@@ -1,3 +1,8 @@
+#
+# # TODO: STEP 7
+#
+# @see <a href="https://blog.jooq.org/using-testcontainers-to-generate-jooq-code/">Using Testcontainers to Generate jOOQ Code</a>
+#
 databaseChangeLog:
   - changeSet:
       id: add-library-address-as-jsonb
