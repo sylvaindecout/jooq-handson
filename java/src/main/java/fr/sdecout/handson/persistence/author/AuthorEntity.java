@@ -12,6 +12,8 @@ import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 import static java.util.Collections.emptyList;
 
+/** @deprecated Replace with jOOQ */
+@Deprecated
 @Entity
 @Table(name = "AUTHOR")
 public class AuthorEntity {
