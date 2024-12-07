@@ -1,0 +1,14 @@
+Thumbs.db
+.DS_Store
+build/
+target/
+out/
+generated
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+hs_err_pid*
