@@ -4,6 +4,7 @@ import fr.sdecout.handson.persistence.book.BookEntity
 import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY
 
+@Deprecated("Replace with jOOQ")
 @Entity
 @Table(name = "LIBRARY")
 data class LibraryEntity(

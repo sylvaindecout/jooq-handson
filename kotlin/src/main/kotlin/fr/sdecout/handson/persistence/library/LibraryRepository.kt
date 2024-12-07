@@ -3,6 +3,7 @@ package fr.sdecout.handson.persistence.library
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
+@Deprecated("Replace with jOOQ")
 interface LibraryRepository : JpaRepository<LibraryEntity, String> {
 
     fun findByAddress_postalCodeStartingWith(departmentId: String): List<LibraryEntity>
