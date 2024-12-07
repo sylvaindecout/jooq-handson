@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: init-db-schema
+      author: SDC
+      changes:
+        - createTable:
+            tableName: BOOK
+            columns:
+              - column:
+                  name: ISBN
+                  type: VARCHAR(13)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: TITLE
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: AUTHOR
+            columns:
+              - column:
+                  name: ID
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: LAST_NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: FIRST_NAME
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: BOOK_AUTHOR
+            columns:
+              - column:
+                  name: BOOK
+                  type: VARCHAR(13)
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: FK_BOOK_AUTHOR_BOOK
+                    references: BOOK(ISBN)
+              - column:
+                  name: AUTHOR
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    foreignKeyName: FK_BOOK_AUTHOR_AUTHOR
+                    references: AUTHOR(ID)
