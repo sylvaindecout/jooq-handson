@@ -10,6 +10,16 @@
 * Populate test DB: `docker exec -i jooq-handson-database psql postgresql://user:user123@localhost:5432/handson < ../database/init_data.sql`
 * Use REST API: [OpenAPI specification](../openapi.yml)
 
+# Steps
+
+1. [Basic commands](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+2. [Queries from single tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+3. [Queries from several tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+4. [Nested queries](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+5. [Type converters](src/main/kotlin/fr/sdecout/handson/persistence/converters/IsbnConverter.kt)
+6. [Batch operations](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+7. [Supporting specifics with Testcontainers](src/main/kotlin/fr/sdecout/handson/rest/shared/AddressField.kt)
+
 ## Context
 
 More info in [parent directory](../README.md).
