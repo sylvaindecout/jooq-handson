@@ -1,0 +1,557 @@
+openapi: 3.0.3
+info:
+  title: jOOQ hands-on
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Author
+    description: Authors
+  - name: Book
+    description: Books
+  - name: Library
+    description: Libraries
+
+paths:
+  /authors:
+    post:
+      tags:
+        - Author
+      summary: Add author
+      description: Add author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorCreationRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+  /authors/{id}:
+    get:
+      tags:
+        - Author
+      summary: Find author
+      description: Find author from ID
+      parameters:
+        - name: id
+          in: path
+          description: Author ID
+          required: true
+          schema:
+            type: string
+            example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+      responses:
+        '200':
+          description: Author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: Author not found
+        default:
+          description: Unexpected error
+  /authors/search:
+    post:
+      tags:
+        - Author
+      summary: Search authors
+      description: Search authors with name matching hint
+      parameters:
+        - name: hint
+          in: query
+          description: Hint
+          required: true
+          schema:
+            type: string
+            example: 'ostoev'
+      responses:
+        '200':
+          description: List of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorSearchResponseItem'
+        default:
+          description: Unexpected error
+  /books/{isbn}:
+    get:
+      tags:
+        - Book
+      summary: Get book
+      description: Get book
+      parameters:
+        - name: isbn
+          in: path
+          description: ISBN
+          required: true
+          schema:
+            type: string
+            example: '978-0-67-973450-5'
+      responses:
+        '200':
+          description: Book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: Book not found
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Book
+      summary: Save book
+      description: Add or update book
+      parameters:
+        - name: isbn
+          in: path
+          description: ISBN
+          required: true
+          schema:
+            type: string
+            example: '978-0-67-973450-5'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdateRequest'
+        required: true
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+  /books/search:
+    post:
+      tags:
+        - Book
+      summary: Search books
+      description: Search books with title matching hint
+      parameters:
+        - name: hint
+          in: query
+          description: Hint
+          required: true
+          schema:
+            type: string
+            example: 'rime and punish'
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookSearchResponseItem'
+        default:
+          description: Unexpected error
+  /libraries:
+    post:
+      tags:
+        - Library
+      summary: Add library
+      description: Add library
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryCreationRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+  /libraries/{libraryId}:
+    get:
+      tags:
+        - Library
+      summary: Find library
+      description: Find library from ID
+      parameters:
+        - name: libraryId
+          in: path
+          description: Library ID
+          required: true
+          schema:
+            type: string
+            example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+      responses:
+        '200':
+          description: Library
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: Library not found
+        default:
+          description: Unexpected error
+  /libraries/{libraryId}/books:
+    get:
+      tags:
+        - Library
+      summary: List books
+      description: List all books available at a library
+      parameters:
+        - name: libraryId
+          in: path
+          description: Library ID
+          required: true
+          schema:
+            type: string
+            example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+      responses:
+        '200':
+          description: List of ISBNs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LibraryBookResponseItem'
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Library
+      summary: Add book
+      description: Add book to library
+      parameters:
+        - name: libraryId
+          in: path
+          description: Library ID
+          required: true
+          schema:
+            type: string
+            example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+        - name: isbn
+          in: query
+          description: ISBN
+          required: true
+          schema:
+            type: string
+            example: '978-0-67-973450-5'
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+  /libraries/search:
+    post:
+      tags:
+        - Library
+      summary: Search libraries
+      description: >
+        Search libraries:
+
+        * If `postalCode` is provided, search libraries closest to postal code.
+
+        * If `isbn` is provided, search libraries with corresponding book available.
+
+        * Exactly 1 criterion is expected for a given call.
+      parameters:
+        - name: postalCode
+          in: query
+          description: Postal code
+          required: false
+          schema:
+            type: string
+            example: '75000'
+        - name: isbn
+          in: query
+          description: ISBN
+          required: false
+          schema:
+            type: string
+            example: '978-0-67-973450-5'
+      responses:
+        '200':
+          description: List of libraries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LibrarySearchResponseItem'
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+  /libraries/count:
+    post:
+      tags:
+        - Library
+      summary: Count libraries
+      description: Count libraries that have books from input author available.
+      parameters:
+        - name: author
+          in: query
+          description: Author ID
+          required: true
+          schema:
+            type: string
+            example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+      responses:
+        '200':
+          description: Number of libraries that have book available
+          content:
+            application/json:
+              schema:
+                type: number
+                example: 3
+        '400':
+          description: Invalid request
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+    AddressField:
+      type: object
+      required:
+        - line1
+        - postalCode
+        - city
+      properties:
+        line1:
+          type: string
+          example: 'Quai François-Mauriac'
+        line2:
+          type: string
+          example: 'Cedex 13'
+        postalCode:
+          type: string
+          example: '75706'
+        city:
+          type: string
+          example: 'Paris'
+    BookField:
+      type: object
+      required:
+        - isbn
+        - title
+        - authors
+      properties:
+        isbn:
+          type: string
+          example: '978-0-67-973450-5'
+        title:
+          type: string
+          example: 'Crime and Punishment'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorField'
+    AuthorField:
+      type: object
+      required:
+        - id
+        - lastName
+        - firstName
+      properties:
+        id:
+          type: string
+          example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+        lastName:
+          type: string
+          example: 'Dostoevsky'
+        firstName:
+          type: string
+          example: 'Fyodor'
+    LibraryField:
+      type: object
+      required:
+        - id
+        - name
+        - address
+      properties:
+        id:
+          type: string
+          example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+        name:
+          type: string
+          example: 'BNF'
+        address:
+          $ref: '#/components/schemas/AddressField'
+    AuthorResponse:
+      type: object
+      required:
+        - id
+        - lastName
+        - firstName
+        - publishedBooks
+      properties:
+        id:
+          type: string
+          example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+        lastName:
+          type: string
+          example: 'Dostoevsky'
+        firstName:
+          type: string
+          example: 'Fyodor'
+        publishedBooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookField'
+    AuthorSearchResponseItem:
+      type: object
+      required:
+        - id
+        - lastName
+        - firstName
+      properties:
+        id:
+          type: string
+          example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+        lastName:
+          type: string
+          example: 'Dostoevsky'
+        firstName:
+          type: string
+          example: 'Fyodor'
+    AuthorCreationRequest:
+      type: object
+      required:
+        - lastName
+        - firstName
+      properties:
+        lastName:
+          type: string
+          example: 'Dostoevsky'
+        firstName:
+          type: string
+          example: 'Fyodor'
+    BookResponse:
+      type: object
+      required:
+        - isbn
+        - title
+        - authors
+        - availability
+      properties:
+        isbn:
+          type: string
+          example: '978-0-67-973450-5'
+        title:
+          type: string
+          example: 'Crime and Punishment'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorField'
+        availability:
+          type: array
+          items:
+            $ref: '#/components/schemas/LibraryField'
+    BookUpdateRequest:
+      type: object
+      required:
+        - title
+        - authors
+      properties:
+        title:
+          type: string
+          example: 'Crime and Punishment'
+        authors:
+          type: array
+          items:
+            type: string
+            example: '286ee903-b96e-4a80-bb9c-863d11c3fa48'
+    BookSearchResponseItem:
+      type: object
+      required:
+        - isbn
+        - title
+        - authors
+      properties:
+        isbn:
+          type: string
+          example: '978-0-67-973450-5'
+        title:
+          type: string
+          example: 'Crime and Punishment'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorField'
+    LibraryBookResponseItem:
+      type: object
+      required:
+        - isbn
+        - title
+      properties:
+        isbn:
+          type: string
+          example: '978-0-67-973450-5'
+        title:
+          type: string
+          example: 'Crime and Punishment'
+    LibraryResponse:
+      type: object
+      required:
+        - id
+        - name
+        - address
+      properties:
+        id:
+          type: string
+          example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+        name:
+          type: string
+          example: 'BNF'
+        address:
+          $ref: '#/components/schemas/AddressField'
+    LibrarySearchResponseItem:
+      type: object
+      required:
+        - id
+        - name
+        - address
+      properties:
+        id:
+          type: string
+          example: '54b8aff7-616c-433a-ab0e-02b1c3f6df2c'
+        name:
+          type: string
+          example: 'BNF'
+        address:
+          $ref: '#/components/schemas/AddressField'
+    LibraryCreationRequest:
+      type: object
+      required:
+        - name
+        - address
+      properties:
+        name:
+          type: string
+          example: 'BNF'
+        address:
+          $ref: '#/components/schemas/AddressField'
