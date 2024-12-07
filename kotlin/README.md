@@ -10,6 +10,26 @@
 * Populate test DB: `docker exec -i jooq-handson-database psql postgresql://user:user123@localhost:5432/handson < ../database/init_data.sql`
 * Use REST API: [OpenAPI specification](../openapi.yml)
 
+## Steps
+
+[Introduction](../doc/intro.md)
+
+1. [Basic commands](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+2. [Queries from single tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+3. [Queries from several tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+4. [Nested queries](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+5. [Batch operations](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+6. [Code generation](src/main/resources/db/changelog/db.changelog-master.yaml)
+7. [Type converters](src/main/kotlin/fr/sdecout/handson/persistence/converters/IsbnConverter.kt)
+8. [Supporting specifics with Testcontainers](src/main/kotlin/fr/sdecout/handson/rest/shared/AddressField.kt)
+
+[Conclusion](../doc/conclusion.md)
+
+> 💡 Feeling stuck?
+> * Do you have a clear idea of the [DB schema](../README.md#db-schema)?
+> * Did you start the test DB so that you can experiment with SQL queries? (cf. [Usage](#usage))
+> * Have you checked out the link to jOOQ documentation provided in the step instructions?
+
 ## Context
 
 More info in [parent directory](../README.md).
