@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: 001.init-db-schema.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 002.add-libraries.yaml
+      relativeToChangelogFile: true
