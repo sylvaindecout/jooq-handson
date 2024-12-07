@@ -5,6 +5,7 @@ import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.FetchType.LAZY
 
+@Deprecated("Replace with jOOQ")
 @Entity
 @Table(name = "AUTHOR")
 data class AuthorEntity(
