@@ -18,10 +18,29 @@ class DbBookAdapter(
     override fun findBook(isbn: Isbn): BookResponse? = bookRepository.findByIdOrNull(isbn.compressedValue)
         ?.toBookResponse()
 
+    /**
+     * # TODO: Step 4
+     *
+     * At this stage, we can deal with 95% of our use cases. Now let's get a step further.
+     *
+     * 1-N relationships can be dealt with multiple queries, but standard SQL includes the capability to nest queries
+     * with `MULTISET` function.
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/column-expressions/multiset-value-constructor/">MULTISET value constructor</a>
+     * @see <a href="https://blog.jooq.org/jooq-3-15s-new-multiset-operator-will-change-how-you-think-about-sql/">jOOQ 3.15’s New Multiset Operator Will Change How You Think About SQL</a>
+     */
     override fun searchBooks(hint: String): List<BookSearchResponseItem> = bookRepository
         .findByTitleLikeIgnoringCase("%$hint%")
         .map { it.toBookSearchResponseItem() }
 
+    /**
+     * # TODO: Step 5
+     *
+     * Even though transaction management has been delegated to Spring, you may want to execute commands in batches for
+     * performance.
+     *
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-execution/batch-execution/">Using JDBC batch operations</a>
+     */
     override fun save(isbn: Isbn, title: String, authors: Collection<AuthorId>) {
         BookEntity(
             isbn = isbn.compressedValue,
