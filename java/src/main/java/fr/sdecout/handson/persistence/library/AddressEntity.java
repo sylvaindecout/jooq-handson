@@ -4,6 +4,8 @@ import fr.sdecout.handson.rest.shared.AddressField;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+/** @deprecated Replace with jOOQ */
+@Deprecated
 @Embeddable
 public class AddressEntity {
 
