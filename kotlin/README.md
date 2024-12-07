@@ -9,6 +9,16 @@
 * Start server: `./gradlew bootRun`
 * Use REST API: [OpenAPI specification](../openapi.yml)
 
+# Steps
+
+1. [Basic commands](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+2. [Queries from single tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+3. [Queries from several tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
+4. [Nested queries](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+5. [Batch operations](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
+6. [Type converters](src/main/kotlin/fr/sdecout/handson/persistence/converters/IsbnConverter.kt)
+7. [Supporting specifics with Testcontainers](src/main/kotlin/fr/sdecout/handson/rest/shared/AddressField.kt)
+
 ## Context
 
 More info in [parent directory](../README.md).

@@ -9,6 +9,16 @@
 * Start server: `./mvnw spring-boot:run`
 * Use REST API: [OpenAPI specification](../openapi.yml)
 
+## Steps
+
+1. [Basic commands](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
+2. [Queries from single tables](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
+3. [Queries from several tables](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
+4. [Nested queries](src/main/java/fr/sdecout/handson/persistence/book/DbBookAdapter.java)
+5. [Batch operations](src/main/java/fr/sdecout/handson/persistence/book/DbBookAdapter.java)
+6. [Type converters](src/main/java/fr/sdecout/handson/persistence/converters/IsbnConverter.java)
+7. [Supporting specifics with Testcontainers](src/main/java/fr/sdecout/handson/rest/shared/AddressField.java)
+
 ## Context
 
 More info in [parent directory](../README.md).
