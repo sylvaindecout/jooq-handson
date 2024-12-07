@@ -1,9 +1,9 @@
 package fr.sdecout.handson.persistence.library
 
+import fr.sdecout.handson.persistence.book.BookRepository
 import fr.sdecout.handson.persistence.jooq.tables.references.BOOK_AUTHOR
 import fr.sdecout.handson.persistence.jooq.tables.references.LIBRARY
 import fr.sdecout.handson.persistence.jooq.tables.references.LIBRARY_BOOK
-import fr.sdecout.handson.persistence.book.BookRepository
 import fr.sdecout.handson.rest.author.AuthorId
 import fr.sdecout.handson.rest.library.*
 import fr.sdecout.handson.rest.shared.AddressField
@@ -61,7 +61,7 @@ class DbLibraryAdapter(
     override fun searchLibrariesWithBookAvailable(isbn: Isbn): List<LibrarySearchResponseItem> = dsl
         .select()
         .from(LIBRARY_BOOK).join(LIBRARY).on(LIBRARY.ID.equal(LIBRARY_BOOK.LIBRARY))
-        .where(LIBRARY_BOOK.BOOK.equal(isbn.compressedValue))
+        .where(LIBRARY_BOOK.BOOK.equal(isbn))
         .fetch {
             LibrarySearchResponseItem(LibraryField(
                 id = it.get(LIBRARY.ID),
@@ -110,7 +110,7 @@ class DbLibraryAdapter(
     override fun addBook(libraryId: LibraryId, isbn: Isbn) {
         dsl.insertInto(LIBRARY_BOOK)
             .set(LIBRARY_BOOK.newRecord()
-                .with(LIBRARY_BOOK.BOOK, isbn.compressedValue)
+                .with(LIBRARY_BOOK.BOOK, isbn)
                 .with(LIBRARY_BOOK.LIBRARY, libraryId.value))
             .onDuplicateKeyIgnore()
             .execute()
