@@ -43,8 +43,8 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetchOptional(it -> new LibraryResponse(
                         it.getId(),
                         it.getName(),
-                        new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
-                );
+                        it.getAddress()
+                ));
     }
 
     /**
@@ -60,7 +60,8 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                     new LibraryField(
                         it.getId(),
                         it.getName(),
-                        new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
+                        it.getAddress()
+                    )
                 )).stream();
     }
 
@@ -77,12 +78,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetch(it -> new LibrarySearchResponseItem(new LibraryField(
                     it.get(LIBRARY.ID),
                     it.get(LIBRARY.NAME),
-                    new AddressField(
-                            it.get(LIBRARY.ADDRESS_LINE_1),
-                            it.get(LIBRARY.ADDRESS_LINE_2),
-                            it.get(LIBRARY.POSTAL_CODE),
-                            it.get(LIBRARY.CITY)
-                    )
+                    it.get(LIBRARY.ADDRESS)
                 ))).stream();
     }
 
@@ -114,7 +110,9 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                         .with(LIBRARY.ADDRESS_LINE_1, address.line1())
                         .with(LIBRARY.ADDRESS_LINE_2, address.line2())
                         .with(LIBRARY.POSTAL_CODE, address.postalCode())
-                        .with(LIBRARY.CITY, address.city()))
+                        .with(LIBRARY.CITY, address.city())
+                        .with(LIBRARY.ADDRESS, address)
+                )
                 .execute();
         return libraryId;
     }
