@@ -1,0 +1,23 @@
+#
+# # TODO: STEP 8
+#
+# @see <a href="https://blog.jooq.org/using-testcontainers-to-generate-jooq-code/">Using Testcontainers to Generate jOOQ Code</a>
+#
+databaseChangeLog:
+  - changeSet:
+      id: add-library-address-as-jsonb
+      author: SDC
+      changes:
+        - addColumn:
+            tableName: LIBRARY
+            columns:
+              - column:
+                  name: ADDRESS
+                  type: JSONB
+                  constraints:
+                    nullable: false
+                  valueComputed: "'{}'::jsonb"
+        - sqlFile:
+            path: 003.add-library-address-as-jsonb/migrate-data.sql
+            stripComments: true
+            relativeToChangelogFile: true
