@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       file: 002.add-libraries.yaml
       relativeToChangelogFile: true
+#  - include:
+#      file: 003.add-library-address-as-jsonb.yaml
+#      relativeToChangelogFile: true
