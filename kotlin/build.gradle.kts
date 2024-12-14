@@ -1,12 +1,17 @@
-import nu.studer.gradle.jooq.JooqEdition
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
 import org.jooq.meta.jaxb.Logging
-import org.jooq.meta.jaxb.Property
 
 val archunitVersion = "1.3.0"
 val jooqLiquibaseVersion = "3.19.10"
 val kotlinLoggingVersion = "7.0.0"
+
+//buildscript {
+//  dependencies {
+//    classpath("org.postgresql", "postgresql")
+//    classpath("org.testcontainers", "postgresql")
+//  }
+//}
 
 plugins {
   kotlin("jvm") version "2.1.0"
@@ -14,7 +19,7 @@ plugins {
   id("org.jetbrains.kotlin.plugin.jpa") version "2.1.0"
   id("org.springframework.boot") version "3.4.0"
   id("io.spring.dependency-management") version "1.1.6"
-  id("nu.studer.jooq") version "9.0"
+  id("org.jooq.jooq-codegen-gradle") version "3.19.15"
 }
 
 repositories {
@@ -38,8 +43,13 @@ dependencies {
   runtimeOnly("org.postgresql", "postgresql")
   implementation("org.liquibase", "liquibase-core")
 
-  jooqGenerator("org.jooq", "jooq-meta-extensions-liquibase", jooqLiquibaseVersion)
-  jooqGenerator("org.liquibase", "liquibase-core")
+  // jooqCodegen("org.jooq", "jooq-meta-extensions-liquibase", jooqLiquibaseVersion)
+  // jooqCodegen("org.liquibase", "liquibase-core")
+
+  jooqCodegen("org.postgresql", "postgresql")
+  jooqCodegen("org.testcontainers", "postgresql")
+  jooqCodegen("org.jooq","jooq-codegen", dependencyManagement.importedProperties["jooq.version"])
+  jooqCodegen("org.jooq","jooq-meta-extensions", dependencyManagement.importedProperties["jooq.version"])
 
   testImplementation("org.springframework.boot", "spring-boot-starter-test") {
     exclude("org.junit.vintage", "junit-vintage-engine")
@@ -69,36 +79,85 @@ springBoot {
 }
 
 jooq {
-  version.set(dependencyManagement.importedProperties["jooq.version"])
-  edition.set(JooqEdition.OSS)
+  version = dependencyManagement.importedProperties["jooq.version"] as String
 
-  configurations {
-    create("main") {
-      generateSchemaSourceOnCompilation.set(true)
-
-      jooqConfiguration.apply {
-        logging = Logging.WARN
-        generator.apply {
-          name = "org.jooq.codegen.KotlinGenerator"
-          database.apply {
-            name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
-            withProperties(
-              Property().withKey("rootPath").withValue("$projectDir/src/main/resources"),
-              Property().withKey("scripts").withValue("/db/changelog/db.changelog-master.yaml"),
-              Property().withKey("includeLiquibaseTables").withValue("false")
-            )
-          }
-          generate.apply {
-            isKotlinNotNullPojoAttributes = true
-            isKotlinNotNullRecordAttributes = true
-            isKotlinNotNullInterfaceAttributes = true
-          }
-          target.apply {
-            packageName = "fr.sdecout.handson.persistence.jooq"
-            directory = "src/generated/jooq"
-          }
-        }
+  configuration {
+    logging = Logging.WARN
+    jdbc {
+      driver = "org.postgresql.Driver"
+      url = System.getProperty("jooq.codegen.jdbc.url")
+      user = System.getProperty("jooq.codegen.jdbc.username")
+      password = System.getProperty("jooq.codegen.jdbc.password")
+    }
+    generator {
+      name = "org.jooq.codegen.KotlinGenerator"
+      database {
+        excludes = "DATABASECHANGELOG | DATABASECHANGELOGLOCK"
+        inputSchema = "public"
+      }
+      generate {
+        isKotlinNotNullPojoAttributes = true
+        isKotlinNotNullRecordAttributes = true
+        isKotlinNotNullInterfaceAttributes = true
+      }
+      target {
+        packageName = "fr.sdecout.handson.persistence.jooq"
+        directory = "src/generated/jooq"
       }
     }
   }
+}
+
+tasks.named("compileKotlin") {
+  dependsOn(tasks.named("jooqCodegen"))
+}
+
+tasks.register("startDatabase") {
+//  dependencies {
+//    implementation("org.postgresql", "postgresql")
+//    implementation("org.testcontainers", "postgresql")
+//  }
+  doLast {
+//    val db = org.testcontainers.containers.PostgreSQLContainer("mysql:latest")
+//      .withDatabaseName("handson")
+//      .withUsername("user")
+//      .withPassword("user123")
+//    db.start()
+
+    println(">>> startDatabase > Starting testcontainer")
+
+    // See https://www.jooq.org/doc/latest/manual/code-generation/codegen-system-properties/
+//    System.setProperty("jooq.codegen.jdbc.url", db.getJdbcUrl())
+//    System.setProperty("jooq.codegen.jdbc.username", db.getUsername())
+//    System.setProperty("jooq.codegen.jdbc.password", db.getPassword())
+//    System.setProperty("testcontainer.containerid", db.getContainerId())
+//    System.setProperty("testcontainer.imageName", db.getDockerImageName())
+    System.setProperty("jooq.codegen.jdbc.url", "jdbc:postgresql://localhost:5432/handson")
+    System.setProperty("jooq.codegen.jdbc.username", "user")
+    System.setProperty("jooq.codegen.jdbc.password", "user123")
+  }
+}
+
+tasks.register("stopDatabase") {
+  doLast {
+    val containerId = System.getProperty("testcontainer.containerid")
+    val imageName = System.getProperty("testcontainer.imageName")
+
+    println(">>> stopDatabase > Stopping testcontainer:  $containerId - $imageName")
+//    org.testcontainers.utility.ResourceReaper
+//      .instance()
+//      .stopAndRemoveContainer(containerId, imageName);
+  }
+}
+
+tasks.named("jooqCodegen") {
+  dependsOn(tasks.named("startDatabase"))
+  finalizedBy(tasks.named("stopDatabase"))
+  doFirst {
+    println(">>> jooqCodegen > This is executed first during the execution phase.")
+  }
+  doLast {
+    println(">>> jooqCodegen > This is executed last during the execution phase.")
+  }
+  println(">>> jooqCodegen > This is executed during the configuration phase as well, because :testBoth is used in the build.")
 }
