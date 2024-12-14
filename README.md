@@ -4,6 +4,15 @@
 
 > This hands-on is available in [Java/Maven](java/README.md) and in [Kotlin/Gradle](kotlin/README.md).
 
+
+
+Current Status:
+
+> Si je mets liquibase.properties, les proprietes sont bien prises en compte et ca marche. Par contre je peux pas le rendre dynamique.
+> Si j'enleve le fichier et que je passe par le plugin Gradle, ca me dit que le changelogFile est pas defini alors que si...?
+
+
+
 ## Domain
 
 ![Stock image](doc/images/books-1281581_640.jpg)
