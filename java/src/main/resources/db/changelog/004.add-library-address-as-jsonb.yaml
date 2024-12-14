@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-library-address-as-jsonb
+      author: SDC
+      changes:
+        - addColumn:
+            tableName: LIBRARY
+            columns:
+              - column:
+                  name: ADDRESS
+                  type: JSONB
+                  constraints:
+                    nullable: false
+                  valueComputed: "'{}'::jsonb"
+        - sqlFile:
+            path: 004.add-library-address-as-jsonb/migrate-data.sql
+            stripComments: true
+            relativeToChangelogFile: true

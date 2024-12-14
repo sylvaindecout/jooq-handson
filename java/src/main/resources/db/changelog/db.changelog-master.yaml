@@ -5,3 +5,11 @@ databaseChangeLog:
   - include:
       file: 002.add-libraries.yaml
       relativeToChangelogFile: true
+
+#  - include:
+#      file: 003.add-book-release-year.yaml
+#      relativeToChangelogFile: true
+
+#  - include:
+#      file: 004.add-library-address-as-jsonb.yaml
+#      relativeToChangelogFile: true
