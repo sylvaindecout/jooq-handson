@@ -50,11 +50,9 @@ dependencies {
   // jooqCodegen("org.liquibase", "liquibase-core")
 
   liquibaseRuntime("org.liquibase", "liquibase-core")
-  liquibaseRuntime("org.postgresql", "postgresql") // FIXME: nec?
-  liquibaseRuntime ("org.liquibase", "liquibase-groovy-dsl", "3.0.2") // FIXME: remove?
-  liquibaseRuntime ("info.picocli", "picocli", "4.7.5") // FIXME: variabilize version
-  // liquibaseRuntime ("mysql", "mysql-connector-java", "5.1.34")
-
+  liquibaseRuntime ("info.picocli", "picocli", "4.7.6") // FIXME: variabilize version
+  liquibaseRuntime("org.postgresql", "postgresql")
+  // liquibaseRuntime ("org.liquibase", "liquibase-groovy-dsl", "3.0.2") // FIXME: remove?
 
   jooqCodegen("org.postgresql", "postgresql")
   jooqCodegen("org.testcontainers", "postgresql")
@@ -78,7 +76,7 @@ buildscript {
   dependencies {
     classpath("org.testcontainers", "postgresql", "1.20.4") // FIXME
     classpath("org.liquibase", "liquibase-gradle-plugin", "3.0.1") {
-      exclude(module="liquibase-core")
+      exclude(group="org.liquibase", module="liquibase-core")
     }
     classpath("org.liquibase", "liquibase-core", "4.29.2")
   }
