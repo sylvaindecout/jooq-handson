@@ -7,6 +7,7 @@ spring:
 logging:
   level:
     root: INFO
+    org.jooq.tools.LoggerListener: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
   pattern:
