@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotBlank
  * [a dedicated Maven plugin](https://github.com/testcontainers/testcontainers-jooq-codegen-maven-plugin) was recently released to address this specific problematic.
  *
  * @see <a href="https://blog.jooq.org/using-testcontainers-to-generate-jooq-code/">Using Testcontainers to Generate jOOQ Code</a>
+ * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/column-expressions/json-functions/">JSON functions</a>
  */
 data class AddressField(
     @field:NotBlank val line1: String?,

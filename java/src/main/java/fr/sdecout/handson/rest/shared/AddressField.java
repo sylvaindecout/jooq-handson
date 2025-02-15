@@ -27,6 +27,7 @@ import jakarta.validation.constraints.NotBlank;
  * </p>
  *
  * @see <a href="https://blog.jooq.org/using-testcontainers-to-generate-jooq-code/">Using Testcontainers to Generate jOOQ Code</a>
+ * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/column-expressions/json-functions/">JSON functions</a>
  */
 public record AddressField(
         @NotBlank String line1,
