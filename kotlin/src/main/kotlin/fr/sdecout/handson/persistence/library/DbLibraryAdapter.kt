@@ -21,6 +21,9 @@ class DbLibraryAdapter(
      *
      * Let's start with some basic commands.
      *
+     * *jOOQ has already been integrated (see `:heavy_plus_sign: Integrate jOOQ` commit).*
+     * *In order to use it, you need to inject `DSLContext`.*
+     *
      * *Do not forget to build, so that code modelling your DB schema is generated.*
      * *It could be implemented and maintained manually, but this is not something you want.*
      *

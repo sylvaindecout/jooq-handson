@@ -27,6 +27,10 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
      * <h1>TODO: Step 1</h1>
      * <p>Let's start with some basic commands.</p>
      * <p><i>
+     * jOOQ has already been integrated (see <code>:heavy_plus_sign: Integrate jOOQ</code> commit).
+     * In order to use it, you need to inject <code>DSLContext</code>.
+     * </i></p>
+     * <p><i>
      * Do not forget to build, so that code modelling your DB schema is generated.
      * It could be implemented and maintained manually, but this is not something you want.
      * </i></p>
