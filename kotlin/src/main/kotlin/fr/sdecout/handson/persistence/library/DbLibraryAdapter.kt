@@ -21,6 +21,9 @@ class DbLibraryAdapter(
      *
      * Let's start with some basic commands.
      *
+     * The goal is to replace JPA with jOOQ.
+     * You should run the tests before and after any change to check for regressions.
+     *
      * *jOOQ has already been integrated (see `:heavy_plus_sign: Integrate jOOQ` commit).*
      * *In order to use it, you need to inject `DSLContext`.*
      *

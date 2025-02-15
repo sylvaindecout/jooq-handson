@@ -26,6 +26,10 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     /**
      * <h1>TODO: Step 1</h1>
      * <p>Let's start with some basic commands.</p>
+     * <p>
+     * The goal is to replace JPA with jOOQ.
+     * You should run the tests before and after any change to check for regressions.
+     * </p>
      * <p><i>
      * jOOQ has already been integrated (see <code>:heavy_plus_sign: Integrate jOOQ</code> commit).
      * In order to use it, you need to inject <code>DSLContext</code>.
