@@ -26,6 +26,24 @@ SQL was never the problem. We love SQL. What we actually needed was type safety.
 * jOOQ is free for recent versions of most open source DBs. But you have to pay if you use older versions, or DBs such as Oracle or SQL Server. See the [version support matrix](https://www.jooq.org/download/support-matrix) for detailed info.
 * Of course, jOOQ works without Spring. The main difference is that you need to rely on jOOQ to deal with transactions.
 
+## Legacy remediation
+
+Most who have worked on legacy applications will relate to the fact that the part of the code that uses the ORM is often one that tends to get especially wrong:
+
+* It is a prime source of bugs, one that is prone to many regressions.
+* It often mixes with the business logic. In some cases, it is even completely coupled with it.
+* Too many developers only have a superficial grasp of how to use it properly.
+
+That makes it pretty hard to refactor, because any change implies many uncontrolled impacts.
+
+On the contrary, as we have seen, jOOQ makes source code more expressive and more explicit.
+This in itself is a start in sanitizing legacy code.
+
+Besides, migrating to jOOQ can be used as the occasion to regain control of your code base.
+You can address some underlying problems by questioning the interface with the DB directly on the level of SQL, without the bias of the object paradigm and its constraints.
+
+The fact that jOOQ is easy to integrate and can live alongside JPA makes it especially convenient for a gradual migration.
+
 ## What now?
 
 You should now have everything you need to integrate jOOQ in your real-life application without a big bang effect! :rocket:
