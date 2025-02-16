@@ -23,9 +23,10 @@ Let's use them as a safety net in order to replace JPA with jOOQ.
     Using lazy loading in the wrong place leads to the infamous `LazyInitializationException`.
   * Many-to-many relationships come with not-so-easy-to-understand combinations of annotations (`@ManyToMany` and `@JoinTable`).
 * Can you predict what SQL queries are executed by the ORM, in particular when lazy loading is involved?
-  Try to guess for `should find author` in `AuthorControllerTest` and check the actual queries in the logs.
-  You may think you tested your queries, but depending on the context they may be completely different in production.
-
+  * Try to guess for `should find author` in `AuthorControllerTest` and check the actual queries in the logs.
+  * So you may think you tested your queries, but depending on the context they could be completely different in production and lead to unexpected problems.
+  * This may also lead to performance issues, which would require to be addressed specifically, since the basic mechanism of the ORM abstracts SQL queries.
+ 
 JPA is really convenient and straightforward for basic use cases, but it is easy to lose control as your application grows more complex, leading to hard-to-deal-with legacy code.
 
 ## Introducing jOOQ
