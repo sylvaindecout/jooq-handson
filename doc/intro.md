@@ -2,7 +2,7 @@
 
 ## What you should expect
 
-At the end of the hands-on, you should have everything you need to integrate jOOQ in your real-life application without a big bang effect.
+At the end of the hands-on, you should have everything you need to integrate [jOOQ](https://www.jooq.org) in your real-life application without a big bang effect.
 
 ## Initial source code
 
