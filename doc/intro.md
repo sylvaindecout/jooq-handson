@@ -8,7 +8,7 @@ At the end of the hands-on, you should have everything you need to integrate [jO
 
 Let's start by checkout out the initial source code.
 
-We have some tests annotated with `@Tag("Acceptance")` that run against the application along with a PostgreSQL DB thanks to Testcontainers.
+We have some tests annotated with `@Tag("Acceptance")` that run against the application along with a PostgreSQL DB thanks to [Testcontainers](https://testcontainers.com).
 Let's use them as a safety net in order to replace JPA with jOOQ.
 
 ## The problem with JPA
