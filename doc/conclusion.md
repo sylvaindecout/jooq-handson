@@ -2,7 +2,7 @@
 
 ## Step back
 
-Let's take a step back and check how the situation has changed.
+Let's take a step back and check how the situation has changed (you may refer to [Solution branch](https://github.com/sylvaindecout/jooq-handson/tree/Solution) in case you doubt your implementation).
 
 ![Before/after comparison](images/before_after.svg)
 
