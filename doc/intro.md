@@ -17,10 +17,16 @@ Let's use them as a safety net in order to replace JPA with jOOQ.
   * All fields in the entities have to be mutable. Lists notably have to be defined as mutable, which is especially obvious is Kotlin.
   * Some fields in the entities have to be nullable in order to support lazy loading.
 * You define one single model for all queries.
-  * As a result, we need some cyclic dependencies, and lazy loading to make them work. But this is not always enough, as `LibraryRepositoryTest` illustrates.
-  * Lazy loading works in the context of an active session, which is not so explicit. Using lazy loading in the wrong place leads to the infamous `LazyInitializationException`.
+  * As a result, we need some cyclic dependencies, and lazy loading to make them work. 
+    But this is not always enough, as `LibraryRepositoryTest` illustrates.
+  * Lazy loading works in the context of an active session, which is not so explicit.
+    Using lazy loading in the wrong place leads to the infamous `LazyInitializationException`.
   * Many-to-many relationships come with not-so-easy-to-understand combinations of annotations (`@ManyToMany` and `@JoinTable`).
-* Can you predict what SQL queries are executed by the ORM, in particular when lazy loading is involved? You may think you tested your queries, but depending on the context they may be completely different in production.
+* Can you predict what SQL queries are executed by the ORM, in particular when lazy loading is involved?
+  Try to guess for `should find author` in `AuthorControllerTest` and check the actual queries in the logs.
+  You may think you tested your queries, but depending on the context they may be completely different in production.
+
+JPA is really convenient and straightforward for basic use cases, but it is easy to lose control as your application grows more complex, leading to hard-to-deal-with legacy code.
 
 ## Introducing jOOQ
 
