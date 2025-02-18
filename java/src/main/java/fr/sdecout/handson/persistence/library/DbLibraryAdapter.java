@@ -9,13 +9,14 @@ import fr.sdecout.handson.rest.shared.LibraryField;
 import jakarta.transaction.Transactional;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
+import org.jooq.jackson.extensions.converters.JSONBtoJacksonConverter;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static fr.sdecout.handson.persistence.jooq.Tables.*;
-import static org.jooq.impl.DSL.count;
+import static org.jooq.impl.DSL.*;
 
 @Component
 @Transactional
@@ -24,6 +25,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     private final LibraryRepository libraryRepository;
     private final BookRepository bookRepository;
     private final DSLContext dsl;
+    private final JSONBtoJacksonConverter<AddressField> addressConverter = new JSONBtoJacksonConverter<>(AddressField.class);
 
     DbLibraryAdapter(LibraryRepository libraryRepository, BookRepository bookRepository, DSLContext dsl) {
         this.libraryRepository = libraryRepository;
@@ -58,7 +60,8 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                         .with(LIBRARY.ADDRESS_LINE_1, address.line1())
                         .with(LIBRARY.ADDRESS_LINE_2, address.line2())
                         .with(LIBRARY.POSTAL_CODE, address.postalCode())
-                        .with(LIBRARY.CITY, address.city()))
+                        .with(LIBRARY.CITY, address.city())
+                        .with(LIBRARY.ADDRESS, addressConverter.to(address)))
                 .execute();
         return libraryId;
     }
@@ -92,7 +95,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetchOptional(it -> new LibraryResponse(
                         it.getId(),
                         it.getName(),
-                        new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
+                        addressConverter.from(it.getAddress()))
                 );
     }
 
@@ -104,13 +107,12 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesClosestTo(PostalCode postalCode) {
         return dsl.selectFrom(LIBRARY)
-                .where(LIBRARY.POSTAL_CODE.startsWithIgnoreCase(postalCode.departmentCode()))
-                .fetch(it -> new LibrarySearchResponseItem(
-                        new LibraryField(
-                                it.getId(),
-                                it.getName(),
-                                new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
-                )).stream();
+                .where(jsonbGetAttributeAsText(LIBRARY.ADDRESS, "postalCode").startsWithIgnoreCase(postalCode.departmentCode()))
+                .fetch(it -> new LibrarySearchResponseItem(new LibraryField(
+                        it.getId(),
+                        it.getName(),
+                        addressConverter.from(it.getAddress())
+                ))).stream();
     }
 
     /**
@@ -130,12 +132,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetch(it -> new LibrarySearchResponseItem(new LibraryField(
                         it.get(LIBRARY.ID),
                         it.get(LIBRARY.NAME),
-                        new AddressField(
-                                it.get(LIBRARY.ADDRESS_LINE_1),
-                                it.get(LIBRARY.ADDRESS_LINE_2),
-                                it.get(LIBRARY.POSTAL_CODE),
-                                it.get(LIBRARY.CITY)
-                        )
+                        addressConverter.from(it.get(LIBRARY.ADDRESS))
                 ))).stream();
     }
 
