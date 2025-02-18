@@ -60,7 +60,7 @@ class DbLibraryAdapter(
         dsl.insertInto(LIBRARY_BOOK)
             .set(
                 LIBRARY_BOOK.newRecord()
-                .with(LIBRARY_BOOK.BOOK, isbn.compressedValue)
+                .with(LIBRARY_BOOK.BOOK, isbn)
                 .with(LIBRARY_BOOK.LIBRARY, libraryId.value))
             .onDuplicateKeyIgnore()
             .execute()
@@ -109,7 +109,7 @@ class DbLibraryAdapter(
     override fun searchLibrariesWithBookAvailable(isbn: Isbn): List<LibrarySearchResponseItem> = dsl
         .select()
         .from(LIBRARY_BOOK).join(LIBRARY).on(LIBRARY.ID.equal(LIBRARY_BOOK.LIBRARY))
-        .where(LIBRARY_BOOK.BOOK.equal(isbn.compressedValue))
+        .where(LIBRARY_BOOK.BOOK.equal(isbn))
         .fetch {
             LibrarySearchResponseItem(LibraryField(
                 id = it.get(LIBRARY.ID),
