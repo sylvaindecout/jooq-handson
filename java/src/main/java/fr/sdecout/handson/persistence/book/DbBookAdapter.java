@@ -1,15 +1,25 @@
 package fr.sdecout.handson.persistence.book;
 
 import fr.sdecout.handson.persistence.author.AuthorRepository;
+import fr.sdecout.handson.persistence.jooq.tables.records.BookAuthorRecord;
+import fr.sdecout.handson.persistence.jooq.tables.records.BookRecord;
 import fr.sdecout.handson.rest.author.AuthorId;
 import fr.sdecout.handson.rest.book.*;
+import fr.sdecout.handson.rest.shared.AuthorField;
 import fr.sdecout.handson.rest.shared.Isbn;
 import jakarta.transaction.Transactional;
+import org.jooq.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static fr.sdecout.handson.persistence.jooq.Tables.*;
+import static java.util.stream.Stream.concat;
+import static org.jooq.impl.DSL.multiset;
+import static org.jooq.impl.DSL.select;
 
 @Component
 @Transactional
@@ -17,10 +27,12 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final DSLContext dsl;
 
-    DbBookAdapter(BookRepository bookRepository, AuthorRepository authorRepository) {
+    DbBookAdapter(BookRepository bookRepository, AuthorRepository authorRepository, DSLContext dsl) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.dsl = dsl;
     }
 
     @Override
@@ -42,8 +54,23 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
      */
     @Override
     public Stream<BookSearchResponseItem> searchBooks(String hint) {
-        return bookRepository.findByTitleLikeIgnoringCase('%' + hint + '%').stream()
-                .map(BookEntity::toBookSearchResponseItem);
+        Field<List<AuthorField>> bookAuthors = multiset(
+                select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
+                        .from(AUTHOR.join(BOOK_AUTHOR).on(BOOK_AUTHOR.AUTHOR.eq(AUTHOR.ID)))
+                        .where(BOOK_AUTHOR.BOOK.eq(BOOK.ISBN))
+        ).as("authors").convertFrom(result -> result.map(row -> new AuthorField(
+                row.get(AUTHOR.ID),
+                row.get(AUTHOR.LAST_NAME),
+                row.get(AUTHOR.FIRST_NAME)
+        )));
+        return dsl.select(BOOK.ISBN, BOOK.TITLE, bookAuthors)
+                .from(BOOK)
+                .where(BOOK.TITLE.likeIgnoreCase("%" + hint + "%"))
+                .fetch(row -> new BookSearchResponseItem(
+                        new Isbn(row.get(BOOK.ISBN)).formattedValue(),
+                        row.get(BOOK.TITLE),
+                        row.get(bookAuthors)
+                )).stream();
     }
 
     /**
@@ -57,12 +84,32 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
      */
     @Override
     public void save(Isbn isbn, String title, Collection<AuthorId> authors) {
-        var entity = BookEntity.from(
-                isbn.compressedValue(),
-                title,
-                authors.stream().map(AuthorId::value).map(authorRepository::getReferenceById).toList()
-        );
-        bookRepository.save(entity);
+        var upsertOperation = prepareBookUpdate(isbn, title);
+        var removeAuthorOperation = prepareAuthorRemovals(isbn, authors);
+        var addAuthorOperations = prepareAuthorInsertions(isbn, authors);
+        var queries = concat(Stream.of(upsertOperation, removeAuthorOperation), addAuthorOperations).toList();
+        dsl.batch(queries).execute();
+    }
+
+    private InsertOnDuplicateSetMoreStep<BookRecord> prepareBookUpdate(Isbn isbn, String title) {
+        var row = BOOK.newRecord()
+                .with(BOOK.ISBN, isbn.compressedValue())
+                .with(BOOK.TITLE, title);
+        return dsl.insertInto(BOOK).set(row).onDuplicateKeyUpdate().set(row);
+    }
+
+    private DeleteConditionStep<BookAuthorRecord> prepareAuthorRemovals(Isbn isbn, Collection<AuthorId> authors) {
+        return dsl.deleteFrom(BOOK_AUTHOR)
+                .where(BOOK_AUTHOR.BOOK.equal(isbn.compressedValue()))
+                .and(BOOK_AUTHOR.AUTHOR.notIn(authors));
+    }
+
+    private Stream<InsertReturningStep<BookAuthorRecord>> prepareAuthorInsertions(Isbn isbn, Collection<AuthorId> authors) {
+        return authors.stream()
+                .map(authorId -> BOOK_AUTHOR.newRecord()
+                        .with(BOOK_AUTHOR.BOOK, isbn.compressedValue())
+                        .with(BOOK_AUTHOR.AUTHOR, authorId.value()))
+                .map(it -> dsl.insertInto(BOOK_AUTHOR).set(it).onDuplicateKeyIgnore());
     }
 
 }
