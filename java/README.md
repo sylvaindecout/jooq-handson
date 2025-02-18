@@ -7,6 +7,7 @@
 * Run tests: `./mvnw test`
 * Start test DB: `cd .. && docker compose up -d`
 * Start server: `./mvnw spring-boot:run`
+* Populate test DB: `docker exec -i jooq-handson-database psql postgresql://user:user123@localhost:5432/handson < ../database/init_data.sql`
 * Use REST API: [OpenAPI specification](../openapi.yml)
 
 ## Steps
