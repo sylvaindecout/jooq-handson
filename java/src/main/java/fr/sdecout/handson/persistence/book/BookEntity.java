@@ -87,7 +87,11 @@ public class BookEntity {
     }
 
     public BookSearchResponseItem toBookSearchResponseItem() {
-        return new BookSearchResponseItem(toBookField());
+        return new BookSearchResponseItem(
+                new Isbn(isbn).formattedValue(),
+                title,
+                authors.stream().map(AuthorEntity::toAuthorField).toList()
+        );
     }
 
     public BookField toBookField() {
