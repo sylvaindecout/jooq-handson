@@ -1,10 +1,9 @@
 package fr.sdecout.handson.rest.author
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped
-import fr.sdecout.handson.rest.shared.AuthorField
-import jakarta.validation.Valid
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.NotBlank
 
 data class AuthorSearchResponseItem(
-    @field:JsonUnwrapped @field:NotNull @field:Valid val author: AuthorField?,
+    @field:NotBlank val id: String?,
+    @field:NotBlank val lastName: String?,
+    @field:NotBlank val firstName: String?,
 )
