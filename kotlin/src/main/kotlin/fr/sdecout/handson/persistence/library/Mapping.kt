@@ -12,7 +12,9 @@ fun LibraryEntity.toLibraryResponse() = LibraryResponse(
 )
 
 fun LibraryEntity.toLibrarySearchResponseItem() = LibrarySearchResponseItem(
-    library = this.toLibraryField()
+    id = this.id,
+    name = this.name,
+    address = this.address.toAddressField(),
 )
 
 fun LibraryEntity.toLibraryField() = LibraryField(
