@@ -86,7 +86,11 @@ public class LibraryEntity {
     }
 
     public LibrarySearchResponseItem toLibrarySearchResponseItem() {
-        return new LibrarySearchResponseItem(toLibraryField());
+        return new LibrarySearchResponseItem(
+                this.id,
+                this.name,
+                this.address.toAddressField()
+        );
     }
 
     public LibraryField toLibraryField() {

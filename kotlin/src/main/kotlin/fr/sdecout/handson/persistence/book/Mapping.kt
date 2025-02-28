@@ -16,7 +16,9 @@ fun BookEntity.toBookResponse() = BookResponse(
 )
 
 fun BookEntity.toBookSearchResponseItem() = BookSearchResponseItem(
-    book = this.toBookField()
+    isbn = Isbn(this.isbn).formattedValue,
+    title = this.title,
+    authors = this.authors.map { it.toAuthorField() },
 )
 
 fun BookEntity.toBookField() = BookField(

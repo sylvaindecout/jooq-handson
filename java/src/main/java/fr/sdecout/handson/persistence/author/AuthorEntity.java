@@ -82,7 +82,11 @@ public class AuthorEntity {
     }
 
     public AuthorSearchResponseItem toAuthorSearchResponseItem() {
-        return new AuthorSearchResponseItem(this.toAuthorField());
+        return new AuthorSearchResponseItem(
+                this.id,
+                this.lastName,
+                this.firstName
+        );
     }
 
     public AuthorField toAuthorField() {

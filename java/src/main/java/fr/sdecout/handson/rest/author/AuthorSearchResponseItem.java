@@ -1,11 +1,10 @@
 package fr.sdecout.handson.rest.author;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import fr.sdecout.handson.rest.shared.AuthorField;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record AuthorSearchResponseItem(
-        @JsonUnwrapped @NotNull @Valid AuthorField author
+        @NotBlank String id,
+        @NotBlank String lastName,
+        @NotBlank String firstName
 ) {
 }
