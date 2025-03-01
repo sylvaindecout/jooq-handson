@@ -46,7 +46,7 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
     }
 
     /**
-     * <h1>TODO: Step 6</h1>
+     * <h1>TODO: Step 7</h1>
      * <p>
      * Even though transaction management has been delegated to Spring, you may want to execute commands in batches for
      * performance.
