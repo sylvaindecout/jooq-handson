@@ -71,6 +71,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
      * <p>Run the tests and check the console to see how jOOQ logs queries.</p>
      *
      * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-single-tables">SELECT from single tables</a>
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-execution/fetching/">Fetching</a>
      */
     @Override
     public Optional<LibraryResponse> findLibrary(LibraryId id) {
