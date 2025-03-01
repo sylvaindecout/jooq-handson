@@ -61,6 +61,7 @@ class DbLibraryAdapter(
      * Run the tests and check the console to see how jOOQ logs queries.
      *
      * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/select-statement/#select-from-single-tables">SELECT from single tables</a>
+     * @see <a href="https://www.jooq.org/doc/latest/manual/sql-execution/fetching/">Fetching</a>
      */
     override fun findLibrary(id: LibraryId): LibraryResponse? = libraryRepository.findByIdOrNull(id.value)
         ?.toLibraryResponse()
