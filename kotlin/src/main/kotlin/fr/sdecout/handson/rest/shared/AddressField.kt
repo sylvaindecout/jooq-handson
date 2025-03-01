@@ -3,13 +3,13 @@ package fr.sdecout.handson.rest.shared
 import jakarta.validation.constraints.NotBlank
 
 /**
- * # TODO: Step 7
+ * # TODO: Step 8
  *
  * While all RDBMS come with standard SQL, they also introduce specifics.
  * For instance, [PostgreSQL](https://www.postgresql.org) introduces a JSONB type that is more performant than native
  * JSON and has specific operators and indexing capabilities.
  *
- * Uncomment `003.add-library-address-as-jsonb.yaml` migration script in `db.changelog-master.yaml` in order to add a
+ * Uncomment `004.add-library-address-as-jsonb.yaml` migration script in `db.changelog-master.yaml` in order to add a
  * JSONB field.
  * This breaks the build!
  * The reason lies in the process used to generate jOOQ sources (cf. `source-generation.md`), which uses an
