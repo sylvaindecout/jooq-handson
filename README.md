@@ -2,7 +2,19 @@
 
 [![Tests](https://github.com/sylvaindecout/jooq-handson/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/sylvaindecout/jooq-handson/actions/workflows/gradle.yml) [![Tests](https://github.com/sylvaindecout/jooq-handson/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/sylvaindecout/jooq-handson/actions/workflows/maven.yml) [![Gitmoji](https://img.shields.io/badge/gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg)](https://gitmoji.dev)
 
-> This hands-on is available in [Java/Maven](java/README.md) and in [Kotlin/Gradle](kotlin/README.md).
+<div style="display: flex; max-width: 830px; justify-content: center">
+  <div style="display: flex; align-self: end; height: 50%; padding-right: 20px; padding-bottom: 0.1em; justify-content: end; align-items: end">
+
+[<img src="doc/images/logo_java.png" width="80" alt="Java/Maven" />](java/README.md)
+  </div>
+  <div style="display: flex">
+    <img src="doc/images/penguin.png" width="250" alt="Choose wisely" />
+  </div>
+  <div style="display: flex; align-self: start; height: 50%; padding-left: 15px; padding-top: 1em; justify-content: start; align-items: start">
+
+[<img src="doc/images/logo_kotlin.png" width="80" alt="Kotlin/Gradle" />](kotlin/README.md)
+  </div>
+</div>
 
 ## Domain
 
