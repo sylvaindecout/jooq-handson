@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-book-release-year
+      author: SDC
+      changes:
+        - addColumn:
+            tableName: BOOK
+            columns:
+              - column:
+                  name: RELEASE_YEAR
+                  type: SMALLINT

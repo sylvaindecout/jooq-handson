@@ -4,7 +4,7 @@ import fr.sdecout.handson.rest.shared.Isbn
 import org.jooq.impl.AbstractConverter
 
 /**
- * # TODO: Step 5
+ * # TODO: Step 6
  *
  * You have probably introduced a lot of calls to [Isbn.compressedValue] or [Isbn.formattedValue] in your commands and
  * queries.

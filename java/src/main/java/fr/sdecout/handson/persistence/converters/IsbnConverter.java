@@ -4,7 +4,7 @@ import fr.sdecout.handson.rest.shared.Isbn;
 import org.jooq.impl.AbstractConverter;
 
 /**
- * <h1>TODO: Step 5</h1>
+ * <h1>TODO: Step 6</h1>
  * <p>
  * You have probably introduced a lot of calls to {@link Isbn#compressedValue()} or {@link Isbn#formattedValue()} in
  * your commands and queries.

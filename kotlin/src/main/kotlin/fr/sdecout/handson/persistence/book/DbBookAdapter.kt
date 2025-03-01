@@ -33,7 +33,7 @@ class DbBookAdapter(
         .map { it.toBookSearchResponseItem() }
 
     /**
-     * # TODO: Step 6
+     * # TODO: Step 7
      *
      * Even though transaction management has been delegated to Spring, you may want to execute commands in batches for
      * performance.
