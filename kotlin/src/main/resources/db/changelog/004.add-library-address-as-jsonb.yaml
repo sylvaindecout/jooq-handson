@@ -13,6 +13,6 @@ databaseChangeLog:
                     nullable: false
                   valueComputed: "'{}'::jsonb"
         - sqlFile:
-            path: 003.add-library-address-as-jsonb/migrate-data.sql
+            path: 004.add-library-address-as-jsonb/migrate-data.sql
             stripComments: true
             relativeToChangelogFile: true
