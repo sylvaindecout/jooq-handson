@@ -21,41 +21,4 @@
 
 ## DB schema
 
-```mermaid
----
-  config:
-    class:
-      hideEmptyMembersBox: true
----
-classDiagram
-  class LIBRARY {
-    # ID
-    NAME
-    ADDRESS_LINE_1
-    ADDRESS_LINE_2
-    POSTAL_CODE
-    CITY
-  }
-  class LIBRARY_BOOK {
-    # BOOK
-    # LIBRARY
-  }
-  class BOOK {
-    # ISBN
-    TITLE
-  }
-  class BOOK_AUTHOR {
-    # BOOK
-    # AUTHOR
-  }
-  class AUTHOR {
-    # ID
-    LAST_NAME
-    FIRST_NAME
-  }
-
-  LIBRARY_BOOK --> LIBRARY
-  LIBRARY_BOOK --> BOOK
-  BOOK_AUTHOR --> BOOK
-  BOOK_AUTHOR --> AUTHOR
-```
+![DB schema](doc/images/db_schema.png)
