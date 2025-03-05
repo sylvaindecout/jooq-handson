@@ -2,7 +2,12 @@
 
 [![Tests](https://github.com/sylvaindecout/jooq-handson/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/sylvaindecout/jooq-handson/actions/workflows/gradle.yml) [![Tests](https://github.com/sylvaindecout/jooq-handson/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/sylvaindecout/jooq-handson/actions/workflows/maven.yml) [![Gitmoji](https://img.shields.io/badge/gitmoji-%20%F0%9F%98%9C%20%F0%9F%98%8D-FFDD67.svg)](https://gitmoji.dev)
 
-> This hands-on is available in [Java/Maven](java/README.md) and in [Kotlin/Gradle](kotlin/README.md).
+<div style="display: flex; max-width: 830px; justify-content: center">
+
+[![Java/Maven](doc/images/penguin_java.png)](java/README.md)
+<picture><img alt="Choose wisely" src="doc/images/penguin.png"></picture>
+[![Kotlin/Gradle](doc/images/penguin_kotlin.png)](kotlin/README.md)
+</div>
 
 ## Domain
 
