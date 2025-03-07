@@ -14,7 +14,7 @@ plugins {
   id("org.jetbrains.kotlin.plugin.jpa") version "2.1.10"
   id("org.springframework.boot") version "3.4.3"
   id("io.spring.dependency-management") version "1.1.7"
-  id("org.jooq.jooq-codegen-gradle") version "3.19.18"
+  id("org.jooq.jooq-codegen-gradle") version "3.20.1"
 }
 
 repositories {
