@@ -28,7 +28,7 @@ SQL was never the problem. We love SQL. What we actually needed was type safety.
 
 ## Legacy remediation
 
-Most who have worked on legacy applications will relate to the fact that the part of the code that uses the ORM is often one that tends to get especially wrong:
+Most who have worked on legacy applications will relate to the fact that the part of the code that uses the ORM is often one that tends to get especially hard to maintain:
 
 * It is a prime source of bugs, one that is prone to many regressions.
 * It often mixes with the business logic. In some cases, it is even completely coupled with it.
