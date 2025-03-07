@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
 import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Property
 
-val archunitVersion = "1.3.0"
+val archunitVersion = "1.4.0"
 val jooqLiquibaseVersion = "3.19.18"
 val kotlinLoggingVersion = "7.0.4"
 val liquibaseVersion = "4.31.0"
