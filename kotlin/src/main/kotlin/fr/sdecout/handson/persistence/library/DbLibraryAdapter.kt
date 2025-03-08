@@ -8,10 +8,10 @@ import fr.sdecout.handson.rest.author.AuthorId
 import fr.sdecout.handson.rest.library.*
 import fr.sdecout.handson.rest.shared.AddressField
 import fr.sdecout.handson.rest.shared.Isbn
-import fr.sdecout.handson.rest.shared.LibraryField
 import jakarta.transaction.Transactional
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.countDistinct
+import org.jooq.jackson.extensions.converters.JSONBtoJacksonConverter
 import org.jooq.kotlin.fetchSingleValue
 import org.springframework.stereotype.Component
 
@@ -22,6 +22,8 @@ class DbLibraryAdapter(
     private val bookRepository: BookRepository,
     private val dsl: DSLContext,
 ) : LibraryAccess, LibrarySearch, LibraryCreation, BookCollectionUpdate {
+
+    private val addressConverter = JSONBtoJacksonConverter(AddressField::class.java)
 
     /**
      * # TODO: Step 1
@@ -47,6 +49,7 @@ class DbLibraryAdapter(
             .set(LIBRARY.ADDRESS_LINE_2, address.line2)
             .set(LIBRARY.POSTAL_CODE, address.postalCode)
             .set(LIBRARY.CITY, address.city)
+            .set(LIBRARY.ADDRESS, addressConverter.to(address))
             .execute()
     }
 
@@ -79,7 +82,7 @@ class DbLibraryAdapter(
         .fetchAny { LibraryResponse(
             id = it.id,
             name = it.name,
-            address = AddressField(it.addressLine_1, it.addressLine_2, it.postalCode, it.city),
+            address = addressConverter.from(it.address),
         ) }
 
     /**
@@ -93,7 +96,7 @@ class DbLibraryAdapter(
         .fetch { LibrarySearchResponseItem(
             id = it.id,
             name = it.name,
-            address = AddressField(it.addressLine_1, it.addressLine_2, it.postalCode, it.city),
+            address = addressConverter.from(it.address),
         ) }
 
     /**
@@ -112,12 +115,7 @@ class DbLibraryAdapter(
             LibrarySearchResponseItem(
                 id = it.get(LIBRARY.ID),
                 name = it.get(LIBRARY.NAME),
-                address = AddressField(
-                    it.get(LIBRARY.ADDRESS_LINE_1),
-                    it.get(LIBRARY.ADDRESS_LINE_2),
-                    it.get(LIBRARY.POSTAL_CODE),
-                    it.get(LIBRARY.CITY)
-                ),
+                address = addressConverter.from(it.get(LIBRARY.ADDRESS)),
             )
         }
 
