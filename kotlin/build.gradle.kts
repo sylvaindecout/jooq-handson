@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
+import org.jooq.meta.jaxb.Nullability.NOT_NULL
 import org.jooq.meta.jaxb.Property
 
 val archunitVersion = "1.4.0"
@@ -87,6 +89,13 @@ jooq {
           Property().withKey("rootPath").withValue("$projectDir/src/main/resources"),
           Property().withKey("scripts").withValue("/db/changelog/db.changelog-master.yaml"),
           Property().withKey("includeLiquibaseTables").withValue("false")
+        )
+        withForcedTypes(
+          ForcedType()
+            .withUserType("fr.sdecout.handson.rest.shared.Isbn")
+            .withConverter("fr.sdecout.handson.persistence.converters.IsbnConverter")
+            .withIncludeExpression("BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK")
+            .withNullability(NOT_NULL)
         )
       }
       generate {
