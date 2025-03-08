@@ -8,6 +8,7 @@ import fr.sdecout.handson.rest.shared.Isbn;
 import jakarta.transaction.Transactional;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
+import org.jooq.jackson.extensions.converters.JSONBtoJacksonConverter;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,6 +24,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     private final LibraryRepository libraryRepository;
     private final BookRepository bookRepository;
     private final DSLContext dsl;
+    private final JSONBtoJacksonConverter<AddressField> addressConverter = new JSONBtoJacksonConverter<>(AddressField.class);
 
     DbLibraryAdapter(LibraryRepository libraryRepository, BookRepository bookRepository, DSLContext dsl) {
         this.libraryRepository = libraryRepository;
@@ -58,6 +60,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .set(LIBRARY.ADDRESS_LINE_2, address.line2())
                 .set(LIBRARY.POSTAL_CODE, address.postalCode())
                 .set(LIBRARY.CITY, address.city())
+                .set(LIBRARY.ADDRESS, addressConverter.to(address))
                 .execute();
         return libraryId;
     }
@@ -91,7 +94,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetchOptional(it -> new LibraryResponse(
                         it.getId(),
                         it.getName(),
-                        new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
+                        addressConverter.from(it.getAddress()))
                 );
     }
 
@@ -107,7 +110,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetch(it -> new LibrarySearchResponseItem(
                         it.getId(),
                         it.getName(),
-                        new AddressField(it.getAddressLine_1(), it.getAddressLine_2(), it.getPostalCode(), it.getCity()))
+                        addressConverter.from(it.getAddress()))
                 ).stream();
     }
 
@@ -128,12 +131,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
                 .fetch(it -> new LibrarySearchResponseItem(
                         it.get(LIBRARY.ID),
                         it.get(LIBRARY.NAME),
-                        new AddressField(
-                                it.get(LIBRARY.ADDRESS_LINE_1),
-                                it.get(LIBRARY.ADDRESS_LINE_2),
-                                it.get(LIBRARY.POSTAL_CODE),
-                                it.get(LIBRARY.CITY)
-                        )
+                        addressConverter.from(it.get(LIBRARY.ADDRESS))
                 )).stream();
     }
 
