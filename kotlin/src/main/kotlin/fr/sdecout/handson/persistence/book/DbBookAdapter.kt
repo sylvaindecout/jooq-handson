@@ -51,7 +51,7 @@ class DbBookAdapter(
         .from(BOOK)
         .where(BOOK.TITLE.likeIgnoreCase("%$hint%"))
         .fetch { BookSearchResponseItem(
-            isbn = it.get(BOOK.ISBN)?.let{ value -> Isbn(value).formattedValue },
+            isbn = it.get(BOOK.ISBN)?.formattedValue,
             title = it.get(BOOK.TITLE),
             authors = it.get(bookAuthors),
         ) }
@@ -73,18 +73,18 @@ class DbBookAdapter(
     }
 
     private fun prepareBookUpdate(isbn: Isbn, title: String): InsertOnDuplicateSetMoreStep<BookRecord> = BOOK.newRecord()
-        .with(BOOK.ISBN, isbn.compressedValue)
+        .with(BOOK.ISBN, isbn)
         .with(BOOK.TITLE, title)
         .let { dsl.insertInto(BOOK).set(it).onDuplicateKeyUpdate().set(it) }
 
     private fun prepareAuthorRemovals(isbn: Isbn, authors: Collection<AuthorId>): DeleteConditionStep<BookAuthorRecord> = dsl
         .deleteFrom(BOOK_AUTHOR)
-        .where(BOOK_AUTHOR.BOOK.equal(isbn.compressedValue))
+        .where(BOOK_AUTHOR.BOOK.equal(isbn))
         .and(BOOK_AUTHOR.AUTHOR.notIn(authors))
 
     private fun prepareAuthorInsertions(isbn: Isbn, authors: Collection<AuthorId>): List<InsertReturningStep<BookAuthorRecord>> = authors
         .map { authorId -> BOOK_AUTHOR.newRecord()
-            .with(BOOK_AUTHOR.BOOK, isbn.compressedValue)
+            .with(BOOK_AUTHOR.BOOK, isbn)
             .with(BOOK_AUTHOR.AUTHOR, authorId.value) }
         .map { dsl.insertInto(BOOK_AUTHOR).set(it).onDuplicateKeyIgnore() }
 
