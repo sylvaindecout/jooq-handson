@@ -66,7 +66,7 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
                 .from(BOOK)
                 .where(BOOK.TITLE.likeIgnoreCase("%" + hint + "%"))
                 .fetch(it -> new BookSearchResponseItem(
-                        new Isbn(it.get(BOOK.ISBN)).formattedValue(),
+                        it.get(BOOK.ISBN).formattedValue(),
                         it.get(BOOK.TITLE),
                         it.get(bookAuthors)
                 )).stream();
@@ -92,21 +92,21 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
 
     private InsertOnDuplicateSetMoreStep<BookRecord> prepareBookUpdate(Isbn isbn, String title) {
         var row = BOOK.newRecord()
-                .with(BOOK.ISBN, isbn.compressedValue())
+                .with(BOOK.ISBN, isbn)
                 .with(BOOK.TITLE, title);
         return dsl.insertInto(BOOK).set(row).onDuplicateKeyUpdate().set(row);
     }
 
     private DeleteConditionStep<BookAuthorRecord> prepareAuthorRemovals(Isbn isbn, Collection<AuthorId> authors) {
         return dsl.deleteFrom(BOOK_AUTHOR)
-                .where(BOOK_AUTHOR.BOOK.equal(isbn.compressedValue()))
+                .where(BOOK_AUTHOR.BOOK.equal(isbn))
                 .and(BOOK_AUTHOR.AUTHOR.notIn(authors));
     }
 
     private Stream<InsertReturningStep<BookAuthorRecord>> prepareAuthorInsertions(Isbn isbn, Collection<AuthorId> authors) {
         return authors.stream()
                 .map(authorId -> BOOK_AUTHOR.newRecord()
-                        .with(BOOK_AUTHOR.BOOK, isbn.compressedValue())
+                        .with(BOOK_AUTHOR.BOOK, isbn)
                         .with(BOOK_AUTHOR.AUTHOR, authorId.value()))
                 .map(it -> dsl.insertInto(BOOK_AUTHOR).set(it).onDuplicateKeyIgnore());
     }
