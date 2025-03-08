@@ -24,6 +24,9 @@
 
         <!-- Third-party dependency versions -->
         <archunit.version>1.4.0</archunit.version>
+
+        <!-- Third-party plugin versions -->
+        <testcontainers-jooq-codegen-maven-plugin.version>0.0.4</testcontainers-jooq-codegen-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -56,6 +59,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-jackson-extensions</artifactId>
+            <version>${jooq.version}</version>
         </dependency>
 
         <dependency>
@@ -97,20 +106,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>fr.sdecout.handson.App</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-jooq-codegen-maven-plugin</artifactId>
+                <version>${testcontainers-jooq-codegen-maven-plugin.version}</version>
                 <dependencies>
                     <dependency>
-                        <groupId>org.jooq</groupId>
-                        <artifactId>jooq-meta-extensions-liquibase</artifactId>
-                        <version>${jooq.version}</version>
+                        <groupId>org.testcontainers</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${testcontainers.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -121,37 +129,33 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <generator>
-                        <database>
-                            <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
-                            <forcedTypes>
-                                <forcedType>
-                                    <userType>fr.sdecout.handson.rest.shared.Isbn</userType>
-                                    <converter>fr.sdecout.handson.persistence.converters.IsbnConverter</converter>
-                                    <includeExpression>BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK</includeExpression>
-                                    <nullability>NOT_NULL</nullability>
-                                </forcedType>
-                            </forcedTypes>
-                            <properties>
-                                <property>
-                                    <key>rootPath</key>
-                                    <value>${basedir}/src/main/resources</value>
-                                </property>
-                                <property>
-                                    <key>scripts</key>
-                                    <value>/db/changelog/db.changelog-master.yaml</value>
-                                </property>
-                                <property>
-                                    <key>includeLiquibaseTables</key>
-                                    <value>false</value>
-                                </property>
-                            </properties>
-                        </database>
-                        <target>
-                            <packageName>fr.sdecout.handson.persistence.jooq</packageName>
-                            <directory>src/generated/jooq</directory>
-                        </target>
-                    </generator>
+                    <database>
+                        <type>POSTGRES</type>
+                    </database>
+                    <liquibase>
+                        <changeLogDirectory>${basedir}/src/main/resources</changeLogDirectory>
+                        <changeLogPath>/db/changelog/db.changelog-master.yaml</changeLogPath>
+                    </liquibase>
+                    <jooq>
+                        <generator>
+                            <database>
+                                <excludes>DATABASECHANGELOG | DATABASECHANGELOGLOCK</excludes>
+                                <inputSchema>public</inputSchema>
+                                <forcedTypes>
+                                    <forcedType>
+                                        <userType>fr.sdecout.handson.rest.shared.Isbn</userType>
+                                        <converter>fr.sdecout.handson.persistence.converters.IsbnConverter</converter>
+                                        <includeExpression>BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK</includeExpression>
+                                        <nullability>NOT_NULL</nullability>
+                                    </forcedType>
+                                </forcedTypes>
+                            </database>
+                            <target>
+                                <packageName>fr.sdecout.handson.persistence.jooq</packageName>
+                                <directory>src/generated/jooq</directory>
+                            </target>
+                        </generator>
+                    </jooq>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,14 +1,13 @@
 -- Libraries
 
-INSERT INTO library (id, name, address_line_1, address_line_2, postal_code, city)
-VALUES ('54b8aff7-616c-433a-ab0e-02b1c3f6df2c', 'BNF', 'Quai François-Mauriac', 'Cedex 13', '75706', 'Paris');
+INSERT INTO library (id, name, address_line_1, address_line_2, postal_code, city, address)
+VALUES ('54b8aff7-616c-433a-ab0e-02b1c3f6df2c', 'BNF', 'Quai François-Mauriac', 'Cedex 13', '75706', 'Paris', '{"line1": "Quai François-Mauriac", "line2": "Cedex 13", "postalCode": "75706", "city": "Paris"}'::jsonb);
 
-INSERT INTO library (id, name, address_line_1, postal_code, city)
-VALUES ('9ad7b7f8-a624-40b7-b7dd-5134135c065f', 'Bibliothèque François Villon', '81, boulevard de la Villette', '75010', 'Paris');
+INSERT INTO library (id, name, address_line_1, postal_code, city, address)
+VALUES ('9ad7b7f8-a624-40b7-b7dd-5134135c065f', 'Bibliothèque François Villon', '81, boulevard de la Villette', '75010', 'Paris', '{"line1": "81, boulevard de la Villette", "postalCode": "75010", "city": "Paris"}'::jsonb);
 
-INSERT INTO library (id, name, address_line_1, postal_code, city)
-VALUES ('94e664d8-7525-4930-bf22-fe8f353c9c73', 'Médiathèque José Cabanis', '1 Allée Jacques Chaban-Delmas', '31500', 'Toulouse');
-
+INSERT INTO library (id, name, address_line_1, postal_code, city, address)
+VALUES ('94e664d8-7525-4930-bf22-fe8f353c9c73', 'Médiathèque José Cabanis', '1 Allée Jacques Chaban-Delmas', '31500', 'Toulouse', '{"line1": "1 Allée Jacques Chaban-Delmas", "postalCode": "31500", "city": "Toulouse"}'::jsonb);
 
 -- Crime and Punishment
 
