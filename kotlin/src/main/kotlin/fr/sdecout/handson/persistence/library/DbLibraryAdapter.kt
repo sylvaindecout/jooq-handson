@@ -11,6 +11,7 @@ import fr.sdecout.handson.rest.shared.Isbn
 import jakarta.transaction.Transactional
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.countDistinct
+import org.jooq.impl.DSL.jsonbGetAttributeAsText
 import org.jooq.jackson.extensions.converters.JSONBtoJacksonConverter
 import org.jooq.kotlin.fetchSingleValue
 import org.springframework.stereotype.Component
@@ -92,7 +93,7 @@ class DbLibraryAdapter(
      */
     override fun searchLibrariesClosestTo(postalCode: PostalCode): List<LibrarySearchResponseItem> = dsl
         .selectFrom(LIBRARY)
-        .where(LIBRARY.POSTAL_CODE.startsWithIgnoreCase(postalCode.departmentCode))
+        .where(jsonbGetAttributeAsText(LIBRARY.ADDRESS, "postalCode").startsWithIgnoreCase(postalCode.departmentCode))
         .fetch { LibrarySearchResponseItem(
             id = it.id,
             name = it.name,
