@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static fr.sdecout.handson.persistence.jooq.Tables.*;
-import static org.jooq.impl.DSL.count;
+import static org.jooq.impl.DSL.*;
 
 @Component
 @Transactional
@@ -106,7 +106,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     @Override
     public Stream<LibrarySearchResponseItem> searchLibrariesClosestTo(PostalCode postalCode) {
         return dsl.selectFrom(LIBRARY)
-                .where(LIBRARY.POSTAL_CODE.startsWithIgnoreCase(postalCode.departmentCode()))
+                .where(jsonbGetAttributeAsText(LIBRARY.ADDRESS, "postalCode").startsWithIgnoreCase(postalCode.departmentCode()))
                 .fetch(it -> new LibrarySearchResponseItem(
                         it.getId(),
                         it.getName(),
