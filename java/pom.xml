@@ -124,6 +124,14 @@
                     <generator>
                         <database>
                             <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
+                            <forcedTypes>
+                                <forcedType>
+                                    <userType>fr.sdecout.handson.rest.shared.Isbn</userType>
+                                    <converter>fr.sdecout.handson.persistence.converters.IsbnConverter</converter>
+                                    <includeExpression>BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK</includeExpression>
+                                    <nullability>NOT_NULL</nullability>
+                                </forcedType>
+                            </forcedTypes>
                             <properties>
                                 <property>
                                     <key>rootPath</key>

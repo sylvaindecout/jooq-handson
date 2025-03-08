@@ -70,7 +70,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     @Override
     public void addBook(LibraryId libraryId, Isbn isbn) {
         dsl.insertInto(LIBRARY_BOOK)
-                .set(LIBRARY_BOOK.BOOK, isbn.compressedValue())
+                .set(LIBRARY_BOOK.BOOK, isbn)
                 .set(LIBRARY_BOOK.LIBRARY, libraryId.value())
                 .onDuplicateKeyIgnore()
                 .execute();
@@ -124,7 +124,7 @@ class DbLibraryAdapter implements LibraryAccess, LibrarySearch, LibraryCreation,
     public Stream<LibrarySearchResponseItem> searchLibrariesWithBookAvailable(Isbn isbn) {
         return dsl.select()
                 .from(LIBRARY_BOOK).join(LIBRARY).on(LIBRARY.ID.equal(LIBRARY_BOOK.LIBRARY))
-                .where(LIBRARY_BOOK.BOOK.equal(isbn.compressedValue()))
+                .where(LIBRARY_BOOK.BOOK.equal(isbn))
                 .fetch(it -> new LibrarySearchResponseItem(
                         it.get(LIBRARY.ID),
                         it.get(LIBRARY.NAME),
