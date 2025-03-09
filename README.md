@@ -27,3 +27,25 @@
 ## DB schema
 
 ![DB schema](doc/images/db_schema.png)
+
+## Troubleshooting
+
+* You use IntelliJ as your IDE, and it does not recognize the projects:
+  * For Java, right-click `pom.xml` file and select "Add as Maven Project".
+  * For Kotlin, right-click `build.gradle.kts` file and select "Link Gradle Project".
+
+* Tests fail with the following error:
+  ```
+  Failed to load ApplicationContext for [WebMergedContextConfiguration@...]
+  java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@...]
+    [...]
+  Caused by: java.lang.IllegalStateException: Could not find a valid Docker environment. Please see logs and check configuration
+    [...]
+  ```
+  * Check that Docker is up and running
+
+* When you start test DB, it fails with the following error:
+  ```
+  unable to get image 'jooq-handson-database': Cannot connect to the Docker daemon at unix:///Users/sylvaindecout/.docker/run/docker.sock. Is the docker daemon running?
+  ```
+  * Check that Docker is up and running

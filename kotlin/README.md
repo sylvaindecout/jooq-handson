@@ -25,6 +25,11 @@
 
 [Conclusion](../doc/conclusion.md)
 
+> 💡 Feeling stuck?
+> * Do you have a clear idea of the [DB schema](../README.md#db-schema)?
+> * Did you start the test DB so that you can experiment with SQL queries? (cf. [Usage](#usage))
+> * Have you checked out the link to jOOQ documentation provided in the step instructions?
+
 ## Context
 
 More info in [parent directory](../README.md).
