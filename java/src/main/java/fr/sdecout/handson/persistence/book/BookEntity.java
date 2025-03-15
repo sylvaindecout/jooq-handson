@@ -77,6 +77,16 @@ public class BookEntity {
         this.availability = availability;
     }
 
+    @Override
+    public String toString() {
+        return "BookEntity{" +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", authors=" + authors +
+                ", availability=" + availability +
+                '}';
+    }
+
     public BookResponse toBookResponse() {
         return new BookResponse(
                 new Isbn(isbn).formattedValue(),
