@@ -77,6 +77,16 @@ public class LibraryEntity {
         this.availableBooks = availableBooks;
     }
 
+    @Override
+    public String toString() {
+        return "LibraryEntity{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", availableBooks=" + availableBooks +
+                '}';
+    }
+
     public LibraryResponse toLibraryResponse() {
         return new LibraryResponse(
                 this.id,
