@@ -12,6 +12,8 @@
 
 ## Steps
 
+[Introduction](../doc/intro.md)
+
 1. [Basic commands](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
 2. [Queries from single tables](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
 3. [Queries from several tables](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
@@ -20,6 +22,8 @@
 6. [Code generation](src/main/resources/db/changelog/db.changelog-master.yaml)
 7. [Type converters](src/main/java/fr/sdecout/handson/persistence/converters/IsbnConverter.java)
 8. [Supporting specifics with Testcontainers](src/main/java/fr/sdecout/handson/rest/shared/AddressField.java)
+
+[Conclusion](../doc/conclusion.md)
 
 ## Context
 
