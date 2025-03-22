@@ -38,6 +38,7 @@ class DbBookAdapter implements BookAccess, BookSearch, BookUpdate {
      * </p>
      *
      * @see <a href="https://www.jooq.org/doc/latest/manual/sql-building/column-expressions/multiset-value-constructor/">MULTISET value constructor</a>
+     * @see <a href="https://blog.jooq.org/jooq-3-15s-new-multiset-operator-will-change-how-you-think-about-sql/">jOOQ 3.15’s New Multiset Operator Will Change How You Think About SQL</a>
      */
     @Override
     public Stream<BookSearchResponseItem> searchBooks(String hint) {
