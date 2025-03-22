@@ -24,9 +24,6 @@
 
         <!-- Third-party dependency versions -->
         <archunit.version>1.4.0</archunit.version>
-
-        <!-- Third-party plugin versions -->
-        <testcontainers-jooq-codegen-maven-plugin.version>0.0.4</testcontainers-jooq-codegen-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -106,56 +103,120 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-jooq-codegen-maven-plugin</artifactId>
-                <version>${testcontainers-jooq-codegen-maven-plugin.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>fr.sdecout.handson.App</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <id>testcontainer-start</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import org.testcontainers.containers.PostgreSQLContainer
+                                db = new PostgreSQLContainer("postgres:15.3")
+                                        .withDatabaseName("sandbox")
+                                        .withUsername("user")
+                                        .withPassword("user123")
+                                db.start()
+                                project.properties.setProperty('jooq.codegen.jdbc.url', db.getJdbcUrl())
+                                project.properties.setProperty('jooq.codegen.jdbc.username', db.getUsername())
+                                project.properties.setProperty('jooq.codegen.jdbc.password', db.getPassword())
+                                project.properties.setProperty('testcontainer.containerid', db.getContainerId())
+                                project.properties.setProperty('testcontainer.imageName', db.getDockerImageName())
+                            </source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>testcontainer-stop</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                import org.testcontainers.utility.ResourceReaper
+                                containerId = "${testcontainer.containerid}"
+                                imageName = "${testcontainer.imageName}"
+                                println("Stopping testcontainer $containerId - $imageName")
+                                ResourceReaper.instance().stopAndRemoveContainer(containerId, imageName)
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.testcontainers</groupId>
                         <artifactId>postgresql</artifactId>
                         <version>${testcontainers.version}</version>
                     </dependency>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>${postgresql.version}</version>
-                    </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>init-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                        <configuration>
+                            <url>${jooq.codegen.jdbc.url}</url>
+                            <username>${jooq.codegen.jdbc.username}</username>
+                            <password>${jooq.codegen.jdbc.password}</password>
+                            <changeLogDirectory>${basedir}/src/main/resources</changeLogDirectory>
+                            <changeLogFile>/db/changelog/db.changelog-master.yaml</changeLogFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-java</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <database>
-                        <type>POSTGRES</type>
-                    </database>
-                    <liquibase>
-                        <changeLogDirectory>${basedir}/src/main/resources</changeLogDirectory>
-                        <changeLogPath>/db/changelog/db.changelog-master.yaml</changeLogPath>
-                    </liquibase>
-                    <jooq>
-                        <generator>
-                            <database>
-                                <excludes>DATABASECHANGELOG | DATABASECHANGELOGLOCK</excludes>
-                                <inputSchema>public</inputSchema>
-                                <forcedTypes>
-                                    <forcedType>
-                                        <userType>fr.sdecout.handson.rest.shared.Isbn</userType>
-                                        <converter>fr.sdecout.handson.persistence.converters.IsbnConverter</converter>
-                                        <includeExpression>BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK</includeExpression>
-                                        <nullability>NOT_NULL</nullability>
-                                    </forcedType>
-                                </forcedTypes>
-                            </database>
-                            <target>
-                                <packageName>fr.sdecout.handson.persistence.jooq</packageName>
-                                <directory>src/generated/jooq</directory>
-                            </target>
-                        </generator>
-                    </jooq>
+                    <jdbc>
+                        <url>${jooq.codegen.jdbc.url}</url>
+                        <user>${jooq.codegen.jdbc.username}</user>
+                        <password>${jooq.codegen.jdbc.password}</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <excludes>DATABASECHANGELOG | DATABASECHANGELOGLOCK</excludes>
+                            <inputSchema>public</inputSchema>
+                            <forcedTypes>
+                                <forcedType>
+                                    <userType>fr.sdecout.handson.rest.shared.Isbn</userType>
+                                    <converter>fr.sdecout.handson.persistence.converters.IsbnConverter</converter>
+                                    <includeExpression>BOOK.ISBN|BOOK_AUTHOR.BOOK|LIBRARY_BOOK.BOOK</includeExpression>
+                                    <nullability>NOT_NULL</nullability>
+                                </forcedType>
+                            </forcedTypes>
+                        </database>
+                        <target>
+                            <packageName>fr.sdecout.handson.persistence.jooq</packageName>
+                            <directory>src/generated/jooq</directory>
+                        </target>
+                    </generator>
                 </configuration>
             </plugin>
         </plugins>
