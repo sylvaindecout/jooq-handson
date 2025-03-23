@@ -30,6 +30,27 @@
 > * Did you start the test DB so that you can experiment with SQL queries? (cf. [Usage](#usage))
 > * Have you checked out the link to jOOQ documentation provided in the step instructions?
 
+## Troubleshooting
+
+* You use IntelliJ as your IDE, and it does not recognize the project:
+  * Right-click `build.gradle.kts` file and select "Link Gradle Project".
+
+* Tests fail with the following error:
+  ```
+  Failed to load ApplicationContext for [WebMergedContextConfiguration@...]
+  java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@...]
+    [...]
+  Caused by: java.lang.IllegalStateException: Could not find a valid Docker environment. Please see logs and check configuration
+    [...]
+  ```
+  * Check that Docker is up and running
+
+* When you start test DB, it fails with the following error:
+  ```
+  unable to get image 'jooq-handson-database': Cannot connect to the Docker daemon at unix:///Users/sylvaindecout/.docker/run/docker.sock. Is the docker daemon running?
+  ```
+  * Check that Docker is up and running
+
 ## Context
 
 More info in [parent directory](../README.md).
