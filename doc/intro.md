@@ -52,4 +52,4 @@ You should take a look at the commit called `:heavy_plus_sign: Integrate jOOQ` i
 
 This hands-on is available in [Java/Maven](../java/README.md) and in [Kotlin/Gradle](../kotlin/README.md).
 
-Now just choose a language and follow the TODOs! :rocket:
+Now just choose a language and follow the TODOs! 🚀
