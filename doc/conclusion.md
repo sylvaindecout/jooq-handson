@@ -7,12 +7,12 @@ Let's take a step back and check how the situation has changed (you may refer to
 ![Before/after comparison](images/before_after.svg)
 
 * Spring Data repositories have been replaced with `DSLContext`.
-* :worried: For most basic queries, Spring Data repositories makes it unnecessary to write most common queries. Now, we need to write them explicitly.
-* :blush: For complex queries, we use pseudo-SQL instead of a methods with names based on a convention. This allows for more flexibility.
-* :blush: Testing queries is easy and feels natural.
-* :grin: Entities have been replaced with generated code. No need to maintain them anymore!
-* :grin: No more complex annotations.
-* :grin: No cyclic dependencies, no lazy loading. Everything is made necessarily explicit.
+* 😟 For most basic queries, Spring Data repositories makes it unnecessary to write most common queries. Now, we need to write them explicitly.
+* 😊 For complex queries, we use pseudo-SQL instead of a methods with names based on a convention. This allows for more flexibility.
+* 😊 Testing queries is easy and feels natural.
+* 😁 Entities have been replaced with generated code. No need to maintain them anymore!
+* 😁 No more complex annotations.
+* 😁 No cyclic dependencies, no lazy loading. Everything is made necessarily explicit.
 
 ORMs came with the need to improve on JDBC. So they got rid of SQL.
 
@@ -47,7 +47,7 @@ Finally, the fact that jOOQ is easy to integrate and can live alongside JPA make
 
 ## What now?
 
-You should now have everything you need to integrate jOOQ in your real-life application without a big bang effect! :rocket:
+You should now have everything you need to integrate jOOQ in your real-life application without a big bang effect! 🚀
 
 ## Going one step further
 
