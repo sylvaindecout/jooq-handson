@@ -19,7 +19,7 @@
 3. [Queries from several tables](src/main/kotlin/fr/sdecout/handson/persistence/library/DbLibraryAdapter.kt)
 4. [Nested queries](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
 5. [Batch operations](src/main/kotlin/fr/sdecout/handson/persistence/book/DbBookAdapter.kt)
-6. [Code generation](src/main/resources/db/changelog/db.changelog-master.yaml)
+6. [Code generation](src/main/kotlin/fr/sdecout/handson/rest/shared/BookField.kt)
 7. [Type converters](src/main/kotlin/fr/sdecout/handson/persistence/converters/IsbnConverter.kt)
 8. [Supporting specifics with Testcontainers](src/main/kotlin/fr/sdecout/handson/rest/shared/AddressField.kt)
 

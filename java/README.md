@@ -19,7 +19,7 @@
 3. [Queries from several tables](src/main/java/fr/sdecout/handson/persistence/library/DbLibraryAdapter.java)
 4. [Nested queries](src/main/java/fr/sdecout/handson/persistence/book/DbBookAdapter.java)
 5. [Batch operations](src/main/java/fr/sdecout/handson/persistence/book/DbBookAdapter.java)
-6. [Code generation](src/main/resources/db/changelog/db.changelog-master.yaml)
+6. [Code generation](src/main/java/fr/sdecout/handson/rest/shared/BookField.java)
 7. [Type converters](src/main/java/fr/sdecout/handson/persistence/converters/IsbnConverter.java)
 8. [Supporting specifics with Testcontainers](src/main/java/fr/sdecout/handson/rest/shared/AddressField.java)
 
