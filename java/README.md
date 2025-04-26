@@ -47,6 +47,7 @@
     [...]
   ```
   * Check that Docker is up and running
+  * If you use an alternative to Docker, check [General Container runtime requirements for Testcontainers](https://java.testcontainers.org/supported_docker_environment/)
 
 * When you start test DB, it fails with the following error:
   ```
