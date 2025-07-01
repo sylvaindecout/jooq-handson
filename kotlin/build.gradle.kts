@@ -10,7 +10,7 @@ val liquibaseVersion = "4.31.0"
 
 plugins {
   kotlin("jvm") version "2.1.21"
-  kotlin("plugin.spring") version "2.1.21"
+  kotlin("plugin.spring") version "2.2.0"
   id("org.jetbrains.kotlin.plugin.jpa") version "2.1.21"
   id("org.springframework.boot") version "3.4.4"
   id("io.spring.dependency-management") version "1.1.7"
