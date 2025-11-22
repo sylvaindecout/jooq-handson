@@ -37,6 +37,8 @@ You can address some underlying problems by questioning the interface with the D
 
 Finally, the fact that jOOQ is easy to integrate and can live alongside JPA makes it especially convenient for a gradual migration.
 
+To go into this topic in further detail, [a series of articles about jOOQ and legacy code is available on Shodo's blog](https://shodo.io/jooq-et-le-code-legacy-1).
+
 ## Side notes
 
 * Code generation is not mandatory. But do you really want to do it manually, and even more so have to maintain it?
@@ -53,3 +55,4 @@ You should now have everything you need to integrate jOOQ in your real-life appl
 
 * [JOOQ, Joy of SQL](https://www.youtube.com/watch?v=fW80PwtNJAM) is a great presentation of jOOQ (also available [in French](https://www.youtube.com/watch?v=5m_oE0iPJJE)).
 * You can check out alternatives to jOOQ along with some insight on [this repository (Java persistence frameworks comparison)](https://github.com/bwajtr/java-persistence-frameworks-comparison).
+* A series of articles (in French) about jOOQ and legacy code is available on [Shodo's blog](https://shodo.io/jooq-et-le-code-legacy-1).
