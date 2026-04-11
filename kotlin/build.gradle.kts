@@ -1,19 +1,19 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_5
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Nullability.NOT_NULL
 import org.jooq.meta.jaxb.Property
 
-val archunitVersion = "1.4.0"
+val archunitVersion = "1.4.1"
 val jooqLiquibaseVersion = "3.19.22"
-val kotlinLoggingVersion = "7.0.4"
+val kotlinLoggingVersion = "7.0.14"
 val liquibaseVersion = "4.31.0"
 
 plugins {
-  kotlin("jvm") version "2.1.21"
-  kotlin("plugin.spring") version "2.1.21"
-  id("org.jetbrains.kotlin.plugin.jpa") version "2.1.21"
+  kotlin("jvm") version "2.3.20"
+  kotlin("plugin.spring") version "2.3.20"
+  id("org.jetbrains.kotlin.plugin.jpa") version "2.3.20"
   id("org.springframework.boot") version "3.4.4"
   id("io.spring.dependency-management") version "1.1.7"
   id("org.jooq.jooq-codegen-gradle") version "3.19.22"
@@ -55,8 +55,8 @@ dependencies {
 
 kotlin {
   compilerOptions {
-    jvmTarget.set(JVM_21)
-    languageVersion.set(KOTLIN_2_0)
+    jvmTarget.set(JVM_25)
+    languageVersion.set(KOTLIN_2_5)
   }
 }
 
