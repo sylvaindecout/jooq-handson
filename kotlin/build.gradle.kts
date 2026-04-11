@@ -26,31 +26,31 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib"))
 
-  implementation("io.github.oshai", "kotlin-logging", kotlinLoggingVersion)
+  implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
-  implementation("com.fasterxml.jackson.module", "jackson-module-kotlin")
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-  implementation("org.springframework.boot", "spring-boot-starter-web")
-  implementation("org.springframework.boot", "spring-boot-starter-validation")
-  implementation("org.springframework.boot", "spring-boot-starter-actuator")
-  implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
-  implementation("org.springframework.boot", "spring-boot-starter-jooq")
-  implementation("org.jooq", "jooq-kotlin")
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+  implementation("org.springframework.boot:spring-boot-starter-jooq")
+  implementation("org.jooq:jooq-kotlin")
 
-  runtimeOnly("org.postgresql", "postgresql")
-  implementation("org.liquibase", "liquibase-core", liquibaseVersion)
+  runtimeOnly("org.postgresql:postgresql")
+  implementation("org.liquibase:liquibase-core:$liquibaseVersion")
 
-  jooqCodegen("org.liquibase", "liquibase-core")
-  jooqCodegen("org.jooq", "jooq-meta-extensions-liquibase", jooqLiquibaseVersion)
+  jooqCodegen("org.liquibase:liquibase-core")
+  jooqCodegen("org.jooq:jooq-meta-extensions-liquibase:$jooqLiquibaseVersion")
 
-  testImplementation("org.springframework.boot", "spring-boot-starter-test") {
+  testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude("org.junit.vintage", "junit-vintage-engine")
   }
-  testImplementation("org.springframework.boot", "spring-boot-testcontainers")
-  testImplementation("org.testcontainers", "postgresql")
+  testImplementation("org.springframework.boot:spring-boot-testcontainers")
+  testImplementation("org.testcontainers:postgresql")
 
-  testImplementation("com.tngtech.archunit", "archunit", archunitVersion)
-  testImplementation("com.tngtech.archunit", "archunit-junit5", archunitVersion)
+  testImplementation("com.tngtech.archunit:archunit:$archunitVersion")
+  testImplementation("com.tngtech.archunit:archunit-junit5:$archunitVersion")
 }
 
 kotlin {
