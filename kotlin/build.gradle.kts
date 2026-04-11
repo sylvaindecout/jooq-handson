@@ -1,5 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_5
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Nullability.NOT_NULL
@@ -56,7 +56,7 @@ dependencies {
 kotlin {
   compilerOptions {
     jvmTarget.set(JVM_25)
-    languageVersion.set(KOTLIN_2_5)
+    languageVersion.set(KOTLIN_2_3)
   }
 }
 
