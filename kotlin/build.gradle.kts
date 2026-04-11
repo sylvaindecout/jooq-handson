@@ -14,7 +14,7 @@ plugins {
   kotlin("jvm") version "2.3.20"
   kotlin("plugin.spring") version "2.3.20"
   id("org.jetbrains.kotlin.plugin.jpa") version "2.3.20"
-  id("org.springframework.boot") version "3.4.4"
+  id("org.springframework.boot") version "3.5.13"
   id("io.spring.dependency-management") version "1.1.7"
   id("org.jooq.jooq-codegen-gradle") version "3.19.22"
 }

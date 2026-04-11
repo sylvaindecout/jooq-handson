@@ -22,7 +22,7 @@ class LibraryRepositoryTest {
 
     @Test
     fun `should fail to log fetched LibraryEntity instance outside transactional context`(@Autowired libraryRepository: LibraryRepository) {
-        val library = libraryRepository.findByIdOrNull(BNF.id)
+        val library = libraryRepository.findByIdOrNull(BNF.id!!)
         assertThatExceptionOfType(LazyInitializationException::class.java)
             .isThrownBy { library.toString() }
     }
@@ -30,7 +30,7 @@ class LibraryRepositoryTest {
     @Transactional
     @Test
     fun `should fail to log fetched LibraryEntity instance due to cyclic dependencies`(@Autowired libraryRepository: LibraryRepository) {
-        val library = libraryRepository.findByIdOrNull(BNF.id)
+        val library = libraryRepository.findByIdOrNull(BNF.id!!)
         assertThatExceptionOfType(StackOverflowError::class.java)
             .isThrownBy { library.toString() }
     }
